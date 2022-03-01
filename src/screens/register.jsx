@@ -8,7 +8,7 @@ export default function RegisterScreen() {
   };
 
   return (
-    <div className="container-fluid bg-light text-dark mt-3">
+    <div className="container-fluid bg-light text-dark mt-3 py-3">
       <div className="row justify-content-center align-items-center">
         <h2 className="text-center">Register</h2>
       </div>
