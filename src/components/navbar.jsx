@@ -33,7 +33,9 @@ export default function AppNavbar({ hasSearch = true }) {
               title={<i className="fa fa-user-circle" />}
               id="navbarScrollingDropdown"
             >
-              <NavDropdown.Item href="#action3">Profile</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/profile">
+                Profile
+              </NavDropdown.Item>
 
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
