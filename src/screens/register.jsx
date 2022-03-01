@@ -1,9 +1,17 @@
+import { Field } from "formik";
 import { useHistory } from "react-router-dom";
+import { AppForm, FieldError } from "../components/app-form";
+import { registerSchema } from "../utils/validations";
 
 export default function RegisterScreen() {
   const history = useHistory();
 
   const handleLogin = () => {
+    history.replace("/login");
+  };
+
+  const handleSubmit = ({ formValues }) => {
+    console.log("register form: ", formValues);
     history.replace("/login");
   };
 
@@ -15,26 +23,40 @@ export default function RegisterScreen() {
       <hr />
       <div className="row justify-content-center align-items-center h-100">
         <div className="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
-          <form action="">
+          <AppForm
+            initialValues={initialValues}
+            validationSchema={registerSchema}
+            handleSubmit={handleSubmit}
+          >
             <div className="form-group mb-3">
               <label htmlFor="name">Name</label>
-              <input type="text" className="form-control" id="name" />
+              <Field
+                type="text"
+                className="form-control"
+                name="name"
+                id="name"
+              />
+              <FieldError field="name" />
             </div>
             <div className="form-group mb-3">
               <label htmlFor="email">Email</label>
-              <input type="email" className="form-control" id="email" />
+              <Field
+                type="email"
+                className="form-control"
+                name="email"
+                id="email"
+              />
+              <FieldError field="email" />
             </div>
             <div className="form-group mb-3">
               <label htmlFor="password">Password</label>
-              <input type="password" className="form-control" id="password" />
-            </div>
-            <div className="form-group mb-3">
-              <label htmlFor="password_confirmation">Confirm Password</label>
-              <input
+              <Field
                 type="password"
                 className="form-control"
-                id="password_confirmation"
+                name="password"
+                id="password"
               />
+              <FieldError field="password" />
             </div>
             <div className="form-group">
               <button className="btn btn-primary btn-sm">Register</button>
@@ -45,9 +67,15 @@ export default function RegisterScreen() {
                 Login
               </button>
             </div>
-          </form>
+          </AppForm>
         </div>
       </div>
     </div>
   );
 }
+
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+};

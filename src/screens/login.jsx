@@ -12,6 +12,7 @@ export default function LoginScreen() {
 
   const handleSubmit = ({ formValues }) => {
     console.log("form values: ", formValues);
+    history.replace("/");
   };
 
   return (
