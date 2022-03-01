@@ -8,7 +8,7 @@ import {
   Button,
 } from "react-bootstrap";
 
-export default function AppNavbar() {
+export default function AppNavbar({ hasSearch = true }) {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -36,15 +36,17 @@ export default function AppNavbar() {
               <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <Form className="d-flex">
-            <FormControl
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+          {hasSearch && (
+            <Form className="d-flex">
+              <FormControl
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

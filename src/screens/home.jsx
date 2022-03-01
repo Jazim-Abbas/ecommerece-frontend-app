@@ -1,9 +1,10 @@
 import { Navbar } from "../components";
+import BaseLayout from "../layouts/base";
 
 export default function HomeScreen() {
   return (
-    <>
-      <Navbar />
-    </>
+    <BaseLayout>
+      <p>Homescreen</p>
+    </BaseLayout>
   );
 }
