@@ -24,6 +24,7 @@ export default function ShopNameScreen() {
         />
         {shopAvailable()}
         <button className="btn btn-light">Check Availablity</button>
+        <button className="btn btn-primary mx-3">Proceed</button>
       </div>
     </BaseLayout>
   );
