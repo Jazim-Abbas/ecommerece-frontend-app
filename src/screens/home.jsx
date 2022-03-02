@@ -1,5 +1,5 @@
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import BaseLayout from "../layouts/base";
 
 export default function HomeScreen() {
@@ -25,25 +25,23 @@ function SearchResults() {
 
   const item = () => {
     return (
-      <Card>
-        <Card.Img variant="top" src={imageURL} />
-        <ListGroup className="list-group-flush">
-          <ListGroupItem>
-            <p>
-              <span className="fw-bold">Item Name:</span>
-            </p>
-            <p>
-              <span className="fw-bold">Item Price:</span>
-              <span className="mx-2">$30</span>
-            </p>
-          </ListGroupItem>
-          <ListGroupItem>
-            <Button size="sm" variant="primary" onClick={handleViewItem}>
-              View
-            </Button>
-          </ListGroupItem>
-        </ListGroup>
-      </Card>
+      <Link className="text-decoration-none" to="/item/1">
+        <Card>
+          <Card.Img variant="top" src={imageURL} />
+          <ListGroup className="list-group-flush">
+            <ListGroupItem>
+              <p>
+                <span className="fw-bold">Item Name:</span>
+                <span className="mx-2">Pizza</span>
+              </p>
+              <p>
+                <span className="fw-bold">Item Price:</span>
+                <span className="mx-2">$30</span>
+              </p>
+            </ListGroupItem>
+          </ListGroup>
+        </Card>
+      </Link>
     );
   };
 
@@ -52,7 +50,7 @@ function SearchResults() {
       <h3 className="text-center">Search Results: abc</h3>
       <div className="row">
         {itemsCount.map((_, i) => (
-          <div className="col-md-2" key={i}>
+          <div className="col-md-3" key={i}>
             {item()}
           </div>
         ))}
@@ -83,20 +81,17 @@ function Item() {
   };
 
   return (
-    <Card>
-      <Card.Img variant="top" src={imageURL} />
-      <Card.Body>
-        <Card.Title>Item Name</Card.Title>
-        <Card.Text>Price: $32</Card.Text>
-      </Card.Body>
-      <ListGroup className="list-group-flush">
-        <ListGroupItem>
-          <Button size="sm" variant="primary" onClick={handleViewItem}>
-            View
-          </Button>
-          <i class="fa fa-heart float-left mx-4 pointer" aria-hidden="true" />
-        </ListGroupItem>
-      </ListGroup>
-    </Card>
+    <Link className="view-link" to="item/1">
+      <Card>
+        <Card.Img variant="top" src={imageURL} />
+        <Card.Body>
+          <Card.Title>Item Name: Pizza</Card.Title>
+          <Card.Text>Price: $32</Card.Text>
+          <Card.Text>
+            <i class="fa fa-heart float-left pointer" aria-hidden="true" />
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </Link>
   );
 }

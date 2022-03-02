@@ -15,3 +15,12 @@ code {
 .pointer {
   cursor: pointer;
 }
+
+.view-link {
+  text-decoration: none;
+  color: unset;
+}
+
+.view-link:hover {
+  color: unset;
+}
