@@ -41,9 +41,6 @@ export default function ShopScreen() {
               show={showItemModal}
               onHide={() => setShowItemModal(false)}
             />
-            <button className="btn btn-info mx-3">
-              Add New Category for this shop
-            </button>
           </div>
         </div>
         <div className="row g-3 mt-2">
@@ -58,9 +55,7 @@ function ItemModal(props) {
   return (
     <Modal {...props} size="lg" centered>
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Create or Update Item
-        </Modal.Title>
+        <Modal.Title id="item-modal">Create or Update Item</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form>
@@ -120,6 +115,7 @@ function ShopItem() {
         <Card.Title>Item Name</Card.Title>
         <Card.Text>Price: $32</Card.Text>
         <Card.Text>Category</Card.Text>
+        <Card.Text>Total Sales: $20</Card.Text>
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroupItem>
