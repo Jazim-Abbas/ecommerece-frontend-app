@@ -1,4 +1,5 @@
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import BaseLayout from "../layouts/base";
 
 export default function PurchasesScreen() {
@@ -50,7 +51,9 @@ function PurchaseItem() {
         <ListGroupItem>
           <p>
             <span className="fw-bold">Shop Name:</span>
-            <span className="mx-2">DollarSmart</span>
+            <span className="mx-2">
+              <Link to="/shop">DollarSmart</Link>
+            </span>
           </p>
         </ListGroupItem>
         <ListGroupItem>

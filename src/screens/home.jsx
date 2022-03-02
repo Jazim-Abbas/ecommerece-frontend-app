@@ -1,4 +1,5 @@
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import BaseLayout from "../layouts/base";
 
 export default function HomeScreen() {
@@ -14,9 +15,13 @@ export default function HomeScreen() {
 
 function SearchResults() {
   const itemsCount = [1, 2, 3, 4];
-
   const imageURL =
     "https://media.istockphoto.com/photos/bakery-chef-prepare-pizza-picture-id1291299956?b=1&k=20&m=1291299956&s=170667a&w=0&h=Ys_FLtdY0Uzc7yTQl6JzvCHTQ3eRAuqNNU4x8EX1FB8=";
+  const history = useHistory();
+
+  const handleViewItem = () => {
+    history.push("/item/1");
+  };
 
   const item = () => {
     return (
@@ -33,7 +38,7 @@ function SearchResults() {
             </p>
           </ListGroupItem>
           <ListGroupItem>
-            <Button size="sm" variant="primary">
+            <Button size="sm" variant="primary" onClick={handleViewItem}>
               View
             </Button>
           </ListGroupItem>
@@ -51,7 +56,7 @@ function SearchResults() {
             {item()}
           </div>
         ))}
-        <hr className="mt-3" />
+        <hr className="mt-3 mb-4" />
       </div>
     </div>
   );
@@ -71,6 +76,12 @@ function Item() {
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
+  const history = useHistory();
+
+  const handleViewItem = () => {
+    history.push("/item/1");
+  };
+
   return (
     <Card>
       <Card.Img variant="top" src={imageURL} />
@@ -80,7 +91,7 @@ function Item() {
       </Card.Body>
       <ListGroup className="list-group-flush">
         <ListGroupItem>
-          <Button size="sm" variant="primary">
+          <Button size="sm" variant="primary" onClick={handleViewItem}>
             View
           </Button>
           <i class="fa fa-heart float-left mx-4 pointer" aria-hidden="true" />

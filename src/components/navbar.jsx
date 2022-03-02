@@ -10,6 +10,10 @@ import {
 import { Link } from "react-router-dom";
 
 export default function AppNavbar({ hasSearch = true }) {
+  const handleLogout = () => {
+    window.location.replace("/login");
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -44,7 +48,7 @@ export default function AppNavbar({ hasSearch = true }) {
               </NavDropdown.Item>
 
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
           {hasSearch && (

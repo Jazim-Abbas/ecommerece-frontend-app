@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, ListGroup, Carousel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import BaseLayout from "../layouts/base";
 
 const imageURL =
@@ -20,9 +21,9 @@ export default function ItemScreen() {
             <ListGroup.Item>
               <p>
                 <span className="fw-bold">Shop Name:</span>
-                <a href="" className="mx-2">
+                <Link to="/shop" className="mx-2">
                   DollarSmart
-                </a>
+                </Link>
               </p>
             </ListGroup.Item>
             <ListGroup.Item>

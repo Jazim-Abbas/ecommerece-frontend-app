@@ -4,7 +4,8 @@ export default function ProfileScreen() {
   return (
     <BaseLayout hasSearch={false}>
       <h3 className="text-center">Your Public Profile</h3>
-      <form className="my-5">
+      <hr />
+      <form className="my-4">
         <div className="form-group">
           <label htmlFor="profile_image">Profile Picture</label>
           <input type="file" className="form-control" id="profile_image" />

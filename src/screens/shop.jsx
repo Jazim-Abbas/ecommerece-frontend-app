@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Card, Button, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 import BaseLayout from "../layouts/base";
 
@@ -8,7 +9,8 @@ export default function ShopScreen() {
   return (
     <BaseLayout hasSearch={false}>
       <h3 className="text-center">Shop</h3>
-      <form className="mt-5">
+      <hr />
+      <form className="mt-4">
         <div className="form-group">
           <label htmlFor="shop_image">Shop Picture</label>
           <input type="file" className="form-control" id="shop_image" />
@@ -107,6 +109,11 @@ function ShopItems() {
 function ShopItem() {
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
+  const history = useHistory();
+
+  const handleViewItem = () => {
+    history.push("/item/1");
+  };
 
   return (
     <Card>
@@ -122,7 +129,7 @@ function ShopItem() {
           <p>Description</p>
         </ListGroupItem>
         <ListGroupItem>
-          <Button size="sm" variant="primary">
+          <Button size="sm" variant="primary" onClick={handleViewItem}>
             View
           </Button>
           <i class="fa fa-heart float-left mx-4 pointer" aria-hidden="true" />
