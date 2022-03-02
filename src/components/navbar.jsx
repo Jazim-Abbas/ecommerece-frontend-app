@@ -39,6 +39,9 @@ export default function AppNavbar({ hasSearch = true }) {
               <NavDropdown.Item as={Link} to="/init-shop">
                 Shop
               </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/purchases">
+                Purchases
+              </NavDropdown.Item>
 
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>

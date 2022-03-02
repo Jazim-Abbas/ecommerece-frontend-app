@@ -14,18 +14,24 @@ export default function HomeScreen() {
 
 function SearchResults() {
   const itemsCount = [1, 2, 3, 4];
+
   const imageURL =
-    "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
+    "https://media.istockphoto.com/photos/bakery-chef-prepare-pizza-picture-id1291299956?b=1&k=20&m=1291299956&s=170667a&w=0&h=Ys_FLtdY0Uzc7yTQl6JzvCHTQ3eRAuqNNU4x8EX1FB8=";
 
   const item = () => {
     return (
       <Card>
         <Card.Img variant="top" src={imageURL} />
-        <Card.Body>
-          <Card.Title>Item Name</Card.Title>
-          <Card.Text>Price: $32</Card.Text>
-        </Card.Body>
         <ListGroup className="list-group-flush">
+          <ListGroupItem>
+            <p>
+              <span className="fw-bold">Item Name:</span>
+            </p>
+            <p>
+              <span className="fw-bold">Item Price:</span>
+              <span className="mx-2">$30</span>
+            </p>
+          </ListGroupItem>
           <ListGroupItem>
             <Button size="sm" variant="primary">
               View
