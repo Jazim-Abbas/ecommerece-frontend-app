@@ -1,3 +1,4 @@
+import CartPage from "../screens/cart";
 import FavouritesScreen from "../screens/favourites";
 import ItemScreen from "../screens/item";
 import LoginScreen from "../screens/login";
@@ -16,6 +17,7 @@ const PRIVATE_ROUTES = [
   { path: "/profile", Component: ProfileScreen },
   { path: "/init-shop", Component: ShopNameScreen },
   { path: "/shop", Component: ShopScreen },
+  { path: "/cart", Component: CartPage },
   { path: "/item/:id", Component: ItemScreen },
 ];
 

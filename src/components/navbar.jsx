@@ -26,7 +26,7 @@ export default function AppNavbar({ hasSearch = true }) {
             <Nav.Link as={Link} to="/favs">
               <i class="fa fa-heart-o" aria-hidden="true" />
             </Nav.Link>
-            <Nav.Link href="#action2">
+            <Nav.Link as={Link} to="/cart">
               <i class="fa fa-shopping-cart" aria-hidden="true" />
             </Nav.Link>
             <NavDropdown
