@@ -1,6 +1,13 @@
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import BaseLayout from "../layouts/base";
 
 export default function ShopNameScreen() {
+  const history = useHistory();
+
+  const handleProceed = () => {
+    history.replace("/shop");
+  };
+
   const shopAvailable = () => {
     return (
       <div className="mt-2">
@@ -24,7 +31,9 @@ export default function ShopNameScreen() {
         />
         {shopAvailable()}
         <button className="btn btn-light">Check Availablity</button>
-        <button className="btn btn-primary mx-3">Proceed</button>
+        <button className="btn btn-primary mx-3" onClick={handleProceed}>
+          Proceed
+        </button>
       </div>
     </BaseLayout>
   );
