@@ -5,6 +5,7 @@ import BaseLayout from "../layouts/base";
 export default function FavouritesScreen() {
   return (
     <BaseLayout hasSearch={false}>
+      <UserProfile />
       <input
         type="text"
         className="form-control"
@@ -28,6 +29,22 @@ export default function FavouritesScreen() {
         </div>
       </div>
     </BaseLayout>
+  );
+}
+
+function UserProfile() {
+  const history = useHistory();
+
+  const navigateToProfile = () => {
+    history.push("/profile");
+  };
+
+  return (
+    <div className="mb-4">
+      <h3 className="d-inline">John Smith</h3>
+      <i className="fa fa-pencil mx-3 pointer" onClick={navigateToProfile} />
+      <hr />
+    </div>
   );
 }
 
