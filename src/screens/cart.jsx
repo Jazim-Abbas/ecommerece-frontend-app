@@ -1,6 +1,13 @@
+import { useHistory } from "react-router-dom";
 import BaseLayout from "../layouts/base";
 
 export default function CartPage() {
+  const history = useHistory();
+
+  const navigateToPurchases = () => {
+    history.push("/purchases");
+  };
+
   return (
     <BaseLayout>
       <h3 className="text-center">Your Cart</h3>
@@ -8,7 +15,9 @@ export default function CartPage() {
       <div className="mt-5">
         <CartItems />
         <div className="float-end">
-          <button className="btn btn-success">Checkout</button>
+          <button className="btn btn-success" onClick={navigateToPurchases}>
+            Checkout
+          </button>
         </div>
       </div>
     </BaseLayout>

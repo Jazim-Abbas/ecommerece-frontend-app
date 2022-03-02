@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/base";
 
 export default function PurchasesScreen() {
   return (
-    <BaseLayout>
+    <BaseLayout hasSearch={false}>
       <h3 className="text-center">Your Purchases</h3>
       <hr />
       <div className="mt-4">
@@ -37,6 +37,10 @@ function PurchaseItem() {
       <Card.Img variant="top" src={imageURL} />
       <ListGroup className="list-group-flush">
         <ListGroupItem>
+          <p>
+            <span className="fw-bold">Order ID:</span>
+            <span className="mx-2">abc121zaajjhds221</span>
+          </p>
           <p>
             <span className="fw-bold">Item Name:</span>
             <span className="mx-2">Pizza</span>
