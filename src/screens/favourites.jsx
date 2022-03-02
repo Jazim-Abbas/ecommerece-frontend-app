@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import BaseLayout from "../layouts/base";
+import { Link } from "react-router-dom";
 
 export default function FavouritesScreen() {
   return (
@@ -62,20 +63,17 @@ function FavItem() {
   };
 
   return (
-    <Card>
-      <Card.Img variant="top" src={imageURL} />
-      <Card.Body>
-        <Card.Title>Item Name</Card.Title>
-        <Card.Text>Price: $32</Card.Text>
-      </Card.Body>
-      <ListGroup className="list-group-flush">
-        <ListGroupItem>
-          <Button size="sm" variant="primary" onClick={handleViewItem}>
-            View
-          </Button>
-          <i class="fa fa-heart float-left mx-4 pointer" aria-hidden="true" />
-        </ListGroupItem>
-      </ListGroup>
-    </Card>
+    <Link className="view-link" to="/item/1">
+      <Card>
+        <Card.Img variant="top" src={imageURL} />
+        <Card.Body>
+          <Card.Title>Item Name</Card.Title>
+          <Card.Text>Price: $32</Card.Text>
+          <Card.Text>
+            <i class="fa fa-heart float-left pointer" aria-hidden="true" />
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </Link>
   );
 }
