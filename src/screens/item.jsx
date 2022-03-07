@@ -7,6 +7,7 @@ import * as itemApi from "../apis/item";
 import useApi from "../hooks/use-api";
 import { AppLoading } from "../components";
 import { useFavContext } from "../contexts/fav-context";
+import { useCartContext } from "../contexts/cart-context";
 
 const imageURL =
   "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -72,14 +73,7 @@ export default function ItemScreen() {
             <ListGroup.Item>
               <Fav item={item} />
             </ListGroup.Item>
-            <CartOption />
-            <ListGroup.Item>
-              <div className="d-grid">
-                <Button variant="light" size="lg">
-                  Add to Cart
-                </Button>
-              </div>
-            </ListGroup.Item>
+            <Cart />
           </ListGroup>
         </div>
       </div>
@@ -141,7 +135,8 @@ function ItemImagesCarousel() {
   );
 }
 
-function CartOption() {
+function Cart({ item }) {
+  const cartCtx = useCartContext();
   const [cartValue, setCartValue] = useState(1);
 
   const handleIncrement = () => {
@@ -152,19 +147,32 @@ function CartOption() {
     setCartValue((prev) => prev - 1);
   };
 
+  const handleAddToCart = () => {
+    cartCtx.onAddToCart(item, cartValue);
+  };
+
   return (
-    <ListGroup.Item>
-      <button
-        className="btn btn-primary btn-sm"
-        onClick={handleDecrement}
-        disabled={cartValue === 1}
-      >
-        <i class="fa fa-minus" aria-hidden="true" />
-      </button>
-      <span className="mx-5">{cartValue}</span>
-      <button className="btn btn-primary btn-sm" onClick={handleIncrement}>
-        <i class="fa fa-plus" aria-hidden="true" />
-      </button>
-    </ListGroup.Item>
+    <>
+      <ListGroup.Item>
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={handleDecrement}
+          disabled={cartValue === 1}
+        >
+          <i class="fa fa-minus" aria-hidden="true" />
+        </button>
+        <span className="mx-5">{cartValue}</span>
+        <button className="btn btn-primary btn-sm" onClick={handleIncrement}>
+          <i class="fa fa-plus" aria-hidden="true" />
+        </button>
+      </ListGroup.Item>
+      <ListGroup.Item>
+        <div className="d-grid">
+          <Button variant="light" size="lg" onClick={handleAddToCart}>
+            Add to Cart
+          </Button>
+        </div>
+      </ListGroup.Item>
+    </>
   );
 }
