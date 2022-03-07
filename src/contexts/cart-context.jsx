@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
+import { omit } from "underscore";
 
 const CartContext = React.createContext({
   cart: {},
   onAddToCart: () => {},
+  onRemoveFromCart: () => {},
 });
 
 export function CartProvider({ children }) {
@@ -21,8 +23,19 @@ export function CartProvider({ children }) {
     setCart({ ...newCart });
   };
 
+  const handleRemoveFromCart = (itemId) => {
+    const updatedCart = omit(cart, itemId);
+    setCart(updatedCart);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, onAddToCart: handleAddToCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        onAddToCart: handleAddToCart,
+        onRemoveFromCart: handleRemoveFromCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -29,11 +29,24 @@ export default function CartPage() {
 function CartItems({ cartCtx }) {
   const cart = cartCtx.cart;
 
-  console.log("cart: ", cart);
+  const calculateTotalPrice = () => {
+    let total = 0;
+    Object.values(cart).forEach((item) => {
+      const price = item.price * item.quantity;
+      total += price;
+    });
+    return total;
+  };
+
+  const handleRemoveFromCart = (itemId) => {
+    cartCtx.onRemoveFromCart(itemId);
+  };
 
   return (
     <table className="table table-bordered table-hover">
-      <caption className="text-center">Total Price: $500</caption>
+      <caption className="text-center">
+        Total Price: ${calculateTotalPrice()}
+      </caption>
       <thead>
         <tr>
           <th>Name</th>
@@ -49,7 +62,11 @@ function CartItems({ cartCtx }) {
             <td>{item.quantity}</td>
             <td>${item.price}</td>
             <td>
-              <i class="fa fa-times pointer" aria-hidden="true" />
+              <i
+                class="fa fa-times pointer"
+                aria-hidden="true"
+                onClick={() => handleRemoveFromCart(item.id)}
+              />
             </td>
           </tr>
         ))}
