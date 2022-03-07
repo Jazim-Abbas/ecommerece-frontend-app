@@ -12,6 +12,7 @@ export default function useApi(
   async function request(...params) {
     setIsLoading(true);
     nprogress.start();
+    console.log("params: ", ...params);
 
     try {
       const res = await apiFunc(...params);
@@ -28,6 +29,7 @@ export default function useApi(
       console.log(res);
       return res;
     } catch (err) {
+      console.log("error:", err);
       console.log("error from server: ", err.response);
       setIsLoading(false);
 
