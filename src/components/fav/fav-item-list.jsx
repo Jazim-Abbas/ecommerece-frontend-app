@@ -1,26 +1,59 @@
-import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { useFavContext } from "../../contexts/fav-context";
 import { getImageURL } from "../../utils/app";
+import AppLoading from "../loading";
 
 export default function FavItems() {
-  const items = [1, 2, 3, 4];
+  const [favItems, setFavItems] = useState([]);
   const favCtx = useFavContext();
 
-  return Object.values(favCtx.fav).map((fav) => (
-    <div className="col-md-3" key={fav.Item.id}>
-      <FavItem item={fav.Item} />
+  useEffect(() => {
+    const items = Object.values(favCtx.fav);
+    setFavItems(items);
+  }, [favCtx.fav]);
+
+  if (favItems.length === 0) {
+    return <p className="alert alert-info">Empty Favorites</p>;
+  }
+
+  return favItems.map((fav) => (
+    <div className="col-md-3" key={fav.id}>
+      <FavItem
+        item={fav}
+        favItems={favCtx.fav}
+        onToggleFav={favCtx.onToggleFav}
+      />
     </div>
   ));
 }
 
-function FavItem({ item }) {
+function FavItem({ item, favItems, onToggleFav }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const isFav = favItems[item.id];
+  const history = useHistory();
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
-  const history = useHistory();
 
   const handleViewItem = () => {
     history.push("/item/1");
+  };
+
+  const favIconClassname = () => {
+    let icon = "fa fa-heart";
+    if (!isFav) {
+      icon += "-o";
+    }
+    return icon;
+  };
+
+  const handleToggleFavItem = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    onToggleFav(item, isFav, () => {
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -34,7 +67,15 @@ function FavItem({ item }) {
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
           <Card.Text>
-            <i class="fa fa-heart float-left pointer" aria-hidden="true" />
+            {isLoading && <AppLoading />}
+            {!isLoading && (
+              <i
+                class={`${favIconClassname()} float-left pointer`}
+                aria-hidden="true"
+                onClick={handleToggleFavItem}
+              />
+            )}
+            {/* <i class="fa fa-heart float-left pointer" aria-hidden="true" /> */}
           </Card.Text>
         </Card.Body>
       </Card>

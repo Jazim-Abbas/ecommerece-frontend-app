@@ -25,7 +25,7 @@ export function FavProvider({ children }) {
     const favs = res.data.favorites;
     const favObj = {};
     favs.forEach((fv) => {
-      favObj[fv.itemId] = fv;
+      favObj[fv.id] = fv;
     });
     setFavItem(favObj);
   };
