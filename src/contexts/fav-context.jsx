@@ -10,6 +10,7 @@ const FavContext = React.createContext({
 });
 
 export function FavProvider({ children }) {
+  const [toggleLoading, setToggleLoading] = useState(false);
   const [favItem, setFavItem] = useState({});
   const fav = useApi(favApi.getFavItems, { keyExtractor: "favorites" });
   const user = window.localStorage.getItem("user");
@@ -29,14 +30,21 @@ export function FavProvider({ children }) {
     setFavItem(favObj);
   };
 
-  const toggleFavorite = (item, isFav) => {
+  const toggleFavorite = async (item, isFav, callerFunc) => {
+    let apiFunc;
+    let newFavItem;
+
     if (isFav) {
-      const newFavItem = omit(favItem, item.id);
-      setFavItem(newFavItem);
+      apiFunc = favApi.removeFromFav;
+      newFavItem = omit(favItem, item.id);
     } else {
-      const newFavItem = { ...favItem, [item.id]: item };
-      setFavItem(newFavItem);
+      apiFunc = favApi.addToFav;
+      newFavItem = { ...favItem, [item.id]: item };
     }
+
+    await apiFunc(item.id);
+    setFavItem(newFavItem);
+    callerFunc();
   };
 
   return (

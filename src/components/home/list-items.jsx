@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import * as itemApi from "../../apis/item";
@@ -27,13 +27,15 @@ export default function ListItems() {
           item={_item}
           favItems={favCtx.fav}
           onToggleFav={favCtx.onToggleFav}
+          toggleLoading={favCtx.toggleLoading}
         />
       </div>
     ));
   }
 }
 
-function Item({ item, favItems, onToggleFav }) {
+function Item({ item, favItems, onToggleFav, toggleLoading }) {
+  const [isLoading, setIsLoading] = useState(false);
   const isFav = favItems[item.id];
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -48,7 +50,10 @@ function Item({ item, favItems, onToggleFav }) {
 
   const handleToggleFavItem = (e) => {
     e.preventDefault();
-    onToggleFav(item, isFav);
+    setIsLoading(true);
+    onToggleFav(item, isFav, () => {
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -62,11 +67,14 @@ function Item({ item, favItems, onToggleFav }) {
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
           <Card.Text>
-            <i
-              class={`${favIconClassname()} float-left pointer`}
-              aria-hidden="true"
-              onClick={handleToggleFavItem}
-            />
+            {isLoading && <AppLoading />}
+            {!isLoading && (
+              <i
+                class={`${favIconClassname()} float-left pointer`}
+                aria-hidden="true"
+                onClick={handleToggleFavItem}
+              />
+            )}
           </Card.Text>
         </Card.Body>
       </Card>
