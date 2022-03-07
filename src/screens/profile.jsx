@@ -1,6 +1,6 @@
 import { Field } from "formik";
 import { useEffect, useState } from "react";
-import { AppForm } from "../components/app-form";
+import { AppForm, FieldError } from "../components/app-form";
 import BaseLayout from "../layouts/base";
 import { profileSchema } from "../utils/validations";
 
@@ -44,6 +44,7 @@ export default function ProfileScreen() {
           <div className="form-group mt-3">
             <label htmlFor="name">Name</label>
             <Field type="text" className="form-control" id="name" name="name" />
+            <FieldError field="name" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="dof">Date of Birth</label>
@@ -53,6 +54,7 @@ export default function ProfileScreen() {
               id="dof"
               name="dateOfBirth"
             />
+            <FieldError field="dateOfBirth" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="email">Email</label>
@@ -63,10 +65,12 @@ export default function ProfileScreen() {
               name="email"
               disabled
             />
+            <FieldError field="email" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="city">City</label>
             <Field type="text" className="form-control" id="city" name="city" />
+            <FieldError field="city" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="phone">Phone</label>
@@ -76,37 +80,51 @@ export default function ProfileScreen() {
               id="phone"
               name="phone"
             />
+            <FieldError field="phone" />
           </div>
-          <div class="form-group">
+          <div class="form-group mt-3">
             <label for="about">About</label>
-            <textarea
+            <Field
+              component="textarea"
+              className="form-control"
+              rows="2"
+              id="about"
+              name="about"
+            />
+            {/* <textarea
               class="form-control"
               rows="2"
               id="about"
               name="about"
-            ></textarea>
+            ></textarea> */}
           </div>
           <div class="form-group mt-3">
             <label for="address">Address*</label>
-            <textarea
-              class="form-control"
+            <Field
+              component="textarea"
+              className="form-control"
               rows="2"
               id="address"
               name="address"
-            ></textarea>
+            />
           </div>
           <div class="form-group mt-3">
             <label for="country">Select Country</label>
-            <select class="form-control" id="country" name="country">
+            <Field
+              class="form-control"
+              id="country"
+              name="country"
+              component="select"
+            >
               <option value="ind">India</option>
               <option value="usa">USA</option>
               <option value="can">Canada</option>
-            </select>
+            </Field>
           </div>
 
           <button className="btn btn-success mt-3">Save Changes</button>
         </AppForm>
       </div>
     </BaseLayout>
-  );  
+  );
 }
