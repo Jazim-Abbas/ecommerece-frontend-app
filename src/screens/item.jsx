@@ -73,7 +73,7 @@ export default function ItemScreen() {
             <ListGroup.Item>
               <Fav item={item} />
             </ListGroup.Item>
-            <Cart />
+            <Cart item={item} />
           </ListGroup>
         </div>
       </div>
