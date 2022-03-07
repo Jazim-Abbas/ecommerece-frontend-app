@@ -5,17 +5,37 @@ import BaseLayout from "../layouts/base";
 import { profileSchema } from "../utils/validations";
 import * as userApi from "../apis/user";
 import useApi from "../hooks/use-api";
-import { AppLoading } from "../components";
+import { AppLoading, ServerError } from "../components";
+import { getImageURL } from "../utils/app";
 
 export default function ProfileScreen() {
   const api = useApi(userApi.updateProfile, { hasCatchError: true });
   const user = JSON.parse(window.localStorage.getItem("user"));
+  const [profileImg, setProfileImg] = useState("");
+  const [isLocalImg, setIsLocalImg] = useState(false);
+
+  const handleChangeProfileImage = (e) => {
+    setIsLocalImg(true);
+    setProfileImg(e.target.files[0]);
+  };
+
+  const localImageURL = () => {
+    if (profileImg) {
+      return URL.createObjectURL(profileImg);
+    }
+
+    return "";
+  };
 
   const handleSubmit = async ({ formValues }) => {
     try {
       console.log("profile subbmited values: ", formValues);
-      await api.request(formValues);
-      window.localStorage.setItem("user", JSON.stringify(formValues));
+      const res = await api.request({ ...formValues, profile: profileImg });
+      const image = res.data.user.image;
+      window.localStorage.setItem(
+        "user",
+        JSON.stringify({ ...formValues, image })
+      );
     } catch (_) {}
   };
 
@@ -24,15 +44,33 @@ export default function ProfileScreen() {
       <h3 className="text-center">Your Public Profile</h3>
       <hr />
       <div className="my-4">
+        <ServerError error={api.error} />
         <AppForm
           initialValues={user}
           validationSchema={profileSchema}
           handleSubmit={handleSubmit}
         >
-          {/* <div className="form-group">
-            <label htmlFor="profile_image">Profile Picture</label>
-            <Field type="file" className="form-control" id="profile_image" />
-          </div> */}
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="profile_image">Profile Picture</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="profile_image"
+                  // value={profileImg}
+                  onChange={handleChangeProfileImage}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <img
+                src={isLocalImg ? localImageURL() : getImageURL(user.image)}
+                alt="Profile Image"
+                width="200"
+              />
+            </div>
+          </div>
           <div className="form-group mt-3">
             <label htmlFor="name">Name</label>
             <Field type="text" className="form-control" id="name" name="name" />
@@ -111,9 +149,9 @@ export default function ProfileScreen() {
               name="country"
               component="select"
             >
-              <option value="ind">India</option>
+              <option value="india">India</option>
               <option value="usa">USA</option>
-              <option value="can">Canada</option>
+              <option value="canada">Canada</option>
             </Field>
             <FieldError field="country" />
           </div>

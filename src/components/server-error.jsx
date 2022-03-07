@@ -1,9 +1,9 @@
 const ServerError = ({ error }) => {
   if (isErrorExist(error)) {
-    if (Array.isArray(error.data.message)) {
+    if (error.data.errors.length > 0) {
       return (
-        <div className="p-2 alert alert-danger">
-          {error.data.message.map((err) => (
+        <div className="alert alert-danger">
+          {error.data.errors.map((err) => (
             <p key={err}>{err}</p>
           ))}
         </div>
