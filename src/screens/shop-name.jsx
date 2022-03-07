@@ -1,11 +1,41 @@
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 import BaseLayout from "../layouts/base";
+import * as shopApi from "../apis/shop";
+import useApi from "../hooks/use-api";
+import { useEffect, useState } from "react";
+import { AppLoading } from "../components";
 
 export default function ShopNameScreen() {
+  const shopExistsApi = useApi(shopApi.isShopExists, {
+    keyExtractor: "isShopExists",
+  });
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShopExists, setIsShopExists] = useState(false);
+  const [shopname, setShopname] = useState("");
+
+  useEffect(() => {
+    shopExistsApi.request().then((res) => {
+      const isShopExists = res.data.isShopExists;
+      if (isShopExists) {
+        handleProceed();
+      }
+    });
+  }, []);
 
   const handleProceed = () => {
     history.replace("/shop");
+  };
+
+  const handleChangeInput = (e) => {
+    const shopname = e.target.value;
+
+    setIsShopExists(false);
+    setShopname(shopname);
+  };
+
+  const handleCheckAvailablity = () => {
+    setIsShopExists(true);
   };
 
   const shopAvailable = () => {
@@ -15,6 +45,10 @@ export default function ShopNameScreen() {
       </div>
     );
   };
+
+  if (shopExistsApi.isLoading) {
+    return <AppLoading />;
+  }
 
   return (
     <BaseLayout>
@@ -28,12 +62,21 @@ export default function ShopNameScreen() {
           type="text"
           className="form-control"
           placeholder="Shop name ..."
+          value={shopname}
+          onChange={handleChangeInput}
         />
         {shopAvailable()}
-        <button className="btn btn-light">Check Availablity</button>
-        <button className="btn btn-primary mx-3" onClick={handleProceed}>
-          Proceed
-        </button>
+        {isLoading && <AppLoading />}
+        {!isLoading && (
+          <button className="btn btn-light" onClick={handleCheckAvailablity}>
+            Check Availablity
+          </button>
+        )}
+        {isShopExists && (
+          <button className="btn btn-primary mx-3" onClick={handleProceed}>
+            Proceed
+          </button>
+        )}
       </div>
     </BaseLayout>
   );

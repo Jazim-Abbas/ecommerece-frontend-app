@@ -19,6 +19,10 @@ export default function ListItems() {
 
   if (!item.data) return <></>;
 
+  if (item.data.length === 0) {
+    return <p className="alert alert-info">No Items yet</p>;
+  }
+
   if (item.data) {
     return item.data.map((_item, i) => (
       <div className="col-md-3">
