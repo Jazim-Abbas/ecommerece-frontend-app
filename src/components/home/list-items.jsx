@@ -57,7 +57,7 @@ function Item({ item, favItems, onToggleFav, toggleLoading }) {
   };
 
   return (
-    <Link className="view-link" to="item/1">
+    <Link className="view-link" to={`item/${item.id}`}>
       <Card>
         <Card.Img
           variant="top"

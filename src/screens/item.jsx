@@ -6,6 +6,7 @@ import BaseLayout from "../layouts/base";
 import * as itemApi from "../apis/item";
 import useApi from "../hooks/use-api";
 import { AppLoading } from "../components";
+import { useFavContext } from "../contexts/fav-context";
 
 const imageURL =
   "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -69,7 +70,7 @@ export default function ItemScreen() {
               </p>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Fav itemId={id} />
+              <Fav item={item} />
             </ListGroup.Item>
             <CartOption />
             <ListGroup.Item>
@@ -86,11 +87,38 @@ export default function ItemScreen() {
   );
 }
 
-function Fav({ itemId }) {
+function Fav({ item }) {
+  const favCtx = useFavContext();
+  const [isLoading, setIsLoading] = useState(false);
+  const isFav = favCtx.fav[item.id];
+
+  const favIconClassname = () => {
+    let icon = "fa fa-heart";
+    if (!isFav) {
+      icon += "-o";
+    }
+    return icon;
+  };
+
+  const handleToggleFavItem = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    favCtx.onToggleFav(item, isFav, () => {
+      setIsLoading(false);
+    });
+  };
+
   return (
     <p>
       <span className="fw-bold">Add to Favourite</span>:{" "}
-      <i className="fa fa-heart-o mx-2 pointer" aria-hidden="true" />
+      {isLoading && <AppLoading />}
+      {!isLoading && (
+        <i
+          className={`${favIconClassname()} mx-2 pointer`}
+          aria-hidden="true"
+          onClick={handleToggleFavItem}
+        />
+      )}
     </p>
   );
 }
