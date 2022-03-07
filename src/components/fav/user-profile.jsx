@@ -1,10 +1,8 @@
 import { useHistory } from "react-router-dom";
 
 export default function UserProfile() {
-  const user = JSON.parse(window.localStorage.getItem("user"));
   const history = useHistory();
-
-  console.log("user in storage: ", { ...user });
+  const user = JSON.parse(window.localStorage.getItem("user"));
 
   const navigateToProfile = () => {
     history.push("/profile");
