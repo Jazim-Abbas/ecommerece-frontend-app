@@ -1,18 +1,29 @@
 import { Field } from "formik";
 import { useHistory } from "react-router-dom";
 import { AppForm, FieldError } from "../components/app-form";
+import useApi from "../hooks/use-api";
 import { loginSchema } from "../utils/validations";
+import * as authApi from "../apis/auth";
+import { ServerError } from "../components";
 
 export default function LoginScreen() {
+  const auth = useApi(authApi.login, { hasCatchError: true });
   const history = useHistory();
 
   const handleRegister = () => {
     history.replace("/register");
   };
 
-  const handleSubmit = ({ formValues }) => {
-    console.log("form values: ", formValues);
-    history.replace("/");
+  const handleSubmit = async ({ formValues }) => {
+    try {
+      console.log("form values: ", formValues);
+      const res = await auth.request(formValues);
+      const { user } = res.data;
+      const { token, ...userFields } = user;
+      window.localStorage.setItem("token", token);
+      window.localStorage.setItem("user", userFields);
+      history.replace("/");
+    } catch (_) {}
   };
 
   return (
@@ -23,6 +34,7 @@ export default function LoginScreen() {
       <hr />
       <div className="row justify-content-center align-items-center h-100">
         <div className="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+          <ServerError error={auth.error} />
           <AppForm
             initialValues={initialValues}
             validationSchema={loginSchema}
