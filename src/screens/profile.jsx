@@ -3,28 +3,20 @@ import { useEffect, useState } from "react";
 import { AppForm, FieldError } from "../components/app-form";
 import BaseLayout from "../layouts/base";
 import { profileSchema } from "../utils/validations";
+import * as userApi from "../apis/user";
+import useApi from "../hooks/use-api";
+import { AppLoading } from "../components";
 
 export default function ProfileScreen() {
-  const [userFields, setUserFields] = useState({});
+  const api = useApi(userApi.updateProfile, { hasCatchError: true });
   const user = JSON.parse(window.localStorage.getItem("user"));
 
-  useEffect(() => {
-    const fields = {};
-    for (let field in user) {
-      if (!user[field]) {
-        fields[field] = "";
-      } else {
-        fields[field] = user[field];
-      }
-    }
-
-    setUserFields(fields);
-  }, []);
-
-  console.log("user: ", user);
-
-  const handleSubmit = ({ formValues }) => {
-    console.log("profile subbmited values: ", formValues);
+  const handleSubmit = async ({ formValues }) => {
+    try {
+      console.log("profile subbmited values: ", formValues);
+      await api.request(formValues);
+      window.localStorage.setItem("user", JSON.stringify(formValues));
+    } catch (_) {}
   };
 
   return (
@@ -126,9 +118,12 @@ export default function ProfileScreen() {
             <FieldError field="country" />
           </div>
 
-          <button type="submit" className="btn btn-success mt-3">
-            Save Changes
-          </button>
+          {api.isLoading && <AppLoading />}
+          {!api.isLoading && (
+            <button type="submit" className="btn btn-success mt-3">
+              Save Changes
+            </button>
+          )}
         </AppForm>
       </div>
     </BaseLayout>
