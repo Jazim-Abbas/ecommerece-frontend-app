@@ -1,6 +1,6 @@
-import { useHistory } from "react-router-dom";
 import BaseLayout from "../layouts/base";
 import FavItems from "../components/fav/fav-item-list";
+import UserProfile from "../components/fav/user-profile";
 
 export default function FavouritesScreen() {
   return (
@@ -15,21 +15,5 @@ export default function FavouritesScreen() {
         <FavItems />
       </div>
     </BaseLayout>
-  );
-}
-
-function UserProfile() {
-  const history = useHistory();
-
-  const navigateToProfile = () => {
-    history.push("/profile");
-  };
-
-  return (
-    <div className="mb-4">
-      <h3 className="d-inline">John Smith</h3>
-      <i className="fa fa-pencil mx-3 pointer" onClick={navigateToProfile} />
-      <hr />
-    </div>
   );
 }

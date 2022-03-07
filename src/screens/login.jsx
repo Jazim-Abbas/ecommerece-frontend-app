@@ -5,6 +5,7 @@ import useApi from "../hooks/use-api";
 import { loginSchema } from "../utils/validations";
 import * as authApi from "../apis/auth";
 import { ServerError } from "../components";
+import { BASE_URL } from "../utils/app";
 
 export default function LoginScreen() {
   const auth = useApi(authApi.login, { hasCatchError: true });
@@ -21,9 +22,9 @@ export default function LoginScreen() {
       const { user } = res.data;
       const { token, ...userFields } = user;
       window.localStorage.setItem("token", token);
-      window.localStorage.setItem("user", userFields);
-      // history.replace("/");
-      window.location.href = "/";
+      window.localStorage.setItem("user", JSON.stringify(userFields));
+      history.push("/");
+      window.location.reload();
     } catch (_) {}
   };
 
