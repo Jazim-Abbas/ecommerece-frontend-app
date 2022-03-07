@@ -12,10 +12,10 @@ export default function ShopNameScreen() {
   const shopAvailablity = useApi(shopApi.checkAvailablity, {
     keyExtractor: "isAvailable",
   });
+  const createShop = useApi(shopApi.createNewShop, { hasCatchError: true });
   const history = useHistory();
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isShopExists, setIsShopExists] = useState(false);
   const [shopname, setShopname] = useState("");
 
   useEffect(() => {
@@ -27,8 +27,11 @@ export default function ShopNameScreen() {
     });
   }, []);
 
-  const handleProceed = () => {
-    history.replace("/shop");
+  const handleProceed = async () => {
+    try {
+      await createShop.request({ name: shopname });
+      history.replace("/shop");
+    } catch (_) {}
   };
 
   const handleChangeInput = (e) => {
@@ -38,7 +41,8 @@ export default function ShopNameScreen() {
     setShopname(shopname);
   };
 
-  const handleCheckAvailablity = () => {
+  const handleCheckAvailablity = async () => {
+    await shopAvailablity.request({ name: shopname });
     setIsChecked(true);
   };
 
@@ -54,7 +58,11 @@ export default function ShopNameScreen() {
     );
   };
 
-  if (shopExistsApi.isLoading) {
+  if (
+    shopExistsApi.isLoading ||
+    shopAvailablity.isLoading ||
+    createShop.isLoading
+  ) {
     return <AppLoading />;
   }
 
@@ -65,6 +73,7 @@ export default function ShopNameScreen() {
         <p>Choose a memorable name that reflects your style</p>
         <hr />
       </div>
+      <ServerError error={createShop.error} />
       <div className="mt-3">
         <input
           type="text"
