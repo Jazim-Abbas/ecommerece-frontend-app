@@ -22,7 +22,7 @@ export default function ShopNameScreen() {
     shopExistsApi.request().then((res) => {
       const isShopExists = res.data.isShopExists;
       if (isShopExists) {
-        handleProceed();
+        history.replace("/shop");
       }
     });
   }, []);
