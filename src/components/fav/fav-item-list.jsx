@@ -5,7 +5,7 @@ import { useFavContext } from "../../contexts/fav-context";
 import { getImageURL } from "../../utils/app";
 import AppLoading from "../loading";
 
-export default function FavItems() {
+export default function FavItems({ searchVal }) {
   const [favItems, setFavItems] = useState([]);
   const favCtx = useFavContext();
 
@@ -14,11 +14,21 @@ export default function FavItems() {
     setFavItems(items);
   }, [favCtx.fav]);
 
+  const filteredItems = () => {
+    if (searchVal === "") {
+      return favItems;
+    }
+
+    return favItems.filter((item) =>
+      item.name.toLowerCase().includes(searchVal)
+    );
+  };
+
   if (favItems.length === 0) {
     return <p className="alert alert-info">Empty Favorites</p>;
   }
 
-  return favItems.map((fav) => (
+  return filteredItems().map((fav) => (
     <div className="col-md-3" key={fav.id}>
       <FavItem
         item={fav}

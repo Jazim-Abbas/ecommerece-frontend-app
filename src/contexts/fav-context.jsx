@@ -10,7 +10,6 @@ const FavContext = React.createContext({
 });
 
 export function FavProvider({ children }) {
-  const [toggleLoading, setToggleLoading] = useState(false);
   const [favItem, setFavItem] = useState({});
   const fav = useApi(favApi.getFavItems, { keyExtractor: "favorites" });
   const user = window.localStorage.getItem("user");
