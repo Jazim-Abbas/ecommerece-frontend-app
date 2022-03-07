@@ -3,13 +3,17 @@ import BaseLayout from "../layouts/base";
 import * as shopApi from "../apis/shop";
 import useApi from "../hooks/use-api";
 import { useEffect, useState } from "react";
-import { AppLoading } from "../components";
+import { AppLoading, ServerError } from "../components";
 
 export default function ShopNameScreen() {
   const shopExistsApi = useApi(shopApi.isShopExists, {
     keyExtractor: "isShopExists",
   });
+  const shopAvailablity = useApi(shopApi.checkAvailablity, {
+    keyExtractor: "isAvailable",
+  });
   const history = useHistory();
+  const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isShopExists, setIsShopExists] = useState(false);
   const [shopname, setShopname] = useState("");
@@ -30,19 +34,23 @@ export default function ShopNameScreen() {
   const handleChangeInput = (e) => {
     const shopname = e.target.value;
 
-    setIsShopExists(false);
+    setIsChecked(false);
     setShopname(shopname);
   };
 
   const handleCheckAvailablity = () => {
-    setIsShopExists(true);
+    setIsChecked(true);
   };
 
   const shopAvailable = () => {
+    const status = shopAvailablity.data;
+
+    if (!isChecked) return <></>;
+
     return (
-      <div className="mt-2">
-        <p className="badge bg-success">Available</p>
-      </div>
+      <p className={`badge bg-${status ? "success" : "danger"}`}>
+        {status ? "Available" : "Not Available"}
+      </p>
     );
   };
 
@@ -65,14 +73,14 @@ export default function ShopNameScreen() {
           value={shopname}
           onChange={handleChangeInput}
         />
-        {shopAvailable()}
+        <div className="mt-2">{shopAvailable()}</div>
         {isLoading && <AppLoading />}
         {!isLoading && (
           <button className="btn btn-light" onClick={handleCheckAvailablity}>
             Check Availablity
           </button>
         )}
-        {isShopExists && (
+        {shopAvailablity.data && (
           <button className="btn btn-primary mx-3" onClick={handleProceed}>
             Proceed
           </button>
