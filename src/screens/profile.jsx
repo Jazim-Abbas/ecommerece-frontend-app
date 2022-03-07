@@ -91,6 +91,8 @@ export default function ProfileScreen() {
               id="about"
               name="about"
             />
+            <FieldError field="about" />
+
             {/* <textarea
               class="form-control"
               rows="2"
@@ -107,6 +109,7 @@ export default function ProfileScreen() {
               id="address"
               name="address"
             />
+            <FieldError field="address" />
           </div>
           <div class="form-group mt-3">
             <label for="country">Select Country</label>
@@ -120,9 +123,12 @@ export default function ProfileScreen() {
               <option value="usa">USA</option>
               <option value="can">Canada</option>
             </Field>
+            <FieldError field="country" />
           </div>
 
-          <button className="btn btn-success mt-3">Save Changes</button>
+          <button type="submit" className="btn btn-success mt-3">
+            Save Changes
+          </button>
         </AppForm>
       </div>
     </BaseLayout>
