@@ -1,13 +1,14 @@
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
+import ListItems from "../components/home/list-items";
 import BaseLayout from "../layouts/base";
 
 export default function HomeScreen() {
   return (
     <BaseLayout>
-      <SearchResults />
+      {/* <SearchResults /> */}
       <div className="row g-3">
-        <Items />
+        <ListItems />
       </div>
     </BaseLayout>
   );
