@@ -22,22 +22,33 @@ export default function ListItems() {
   if (item.data) {
     return item.data.map((_item, i) => (
       <div className="col-md-3">
-        <Item key={i} item={_item} favItems={favCtx.fav} />
+        <Item
+          key={i}
+          item={_item}
+          favItems={favCtx.fav}
+          onToggleFav={favCtx.onToggleFav}
+        />
       </div>
     ));
   }
 }
 
-function Item({ item, favItems }) {
+function Item({ item, favItems, onToggleFav }) {
+  const isFav = favItems[item.id];
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
   const favIconClassname = () => {
     let icon = "fa fa-heart";
-    if (!favItems[item.id]) {
+    if (!isFav) {
       icon += "-o";
     }
     return icon;
+  };
+
+  const handleToggleFavItem = (e) => {
+    e.preventDefault();
+    onToggleFav(item, isFav);
   };
 
   return (
@@ -54,6 +65,7 @@ function Item({ item, favItems }) {
             <i
               class={`${favIconClassname()} float-left pointer`}
               aria-hidden="true"
+              onClick={handleToggleFavItem}
             />
           </Card.Text>
         </Card.Body>
