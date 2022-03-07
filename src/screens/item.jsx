@@ -8,6 +8,7 @@ import useApi from "../hooks/use-api";
 import { AppLoading } from "../components";
 import { useFavContext } from "../contexts/fav-context";
 import { useCartContext } from "../contexts/cart-context";
+import { getImageURL } from "../utils/app";
 
 const imageURL =
   "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -34,7 +35,7 @@ export default function ItemScreen() {
     <BaseLayout>
       <div className="row">
         <div className="col-md-6">
-          <ItemImagesCarousel />
+          <ItemImagesCarousel itemImages={item.ItemImages} />
         </div>
         <div className="col-md-6">
           <ListGroup>
@@ -117,20 +118,22 @@ function Fav({ item }) {
   );
 }
 
-function ItemImagesCarousel() {
-  const image1 =
-    "https://media.istockphoto.com/photos/bakery-chef-prepare-pizza-picture-id1291299956?b=1&k=20&m=1291299956&s=170667a&w=0&h=Ys_FLtdY0Uzc7yTQl6JzvCHTQ3eRAuqNNU4x8EX1FB8=";
-  const image2 =
-    "https://media.istockphoto.com/photos/homemade-indian-chicken-tikka-masala-pizza-picture-id1340589333?b=1&k=20&m=1340589333&s=170667a&w=0&h=rQaaNq-2klpZXcZ26amIfELKxq78-9S79FycY7Kzu28=";
+function ItemImagesCarousel({ itemImages }) {
+  if (itemImages.length === 0) {
+    return <p className="alert alert-info">No Images for this item</p>;
+  }
 
   return (
     <Carousel>
-      <Carousel.Item>
-        <img src={image1} alt="Single Item Image" className="d-block w-100" />
-      </Carousel.Item>
-      <Carousel.Item>
-        <img src={image2} alt="Single Item Image" className="d-block w-100" />
-      </Carousel.Item>
+      {itemImages.map((itemImg) => (
+        <Carousel.Item>
+          <img
+            src={getImageURL(itemImg.image)}
+            alt="Single Item Image"
+            className="d-block w-100"
+          />
+        </Carousel.Item>
+      ))}
     </Carousel>
   );
 }
