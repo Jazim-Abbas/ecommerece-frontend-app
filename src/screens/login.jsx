@@ -22,7 +22,8 @@ export default function LoginScreen() {
       const { token, ...userFields } = user;
       window.localStorage.setItem("token", token);
       window.localStorage.setItem("user", userFields);
-      history.replace("/");
+      // history.replace("/");
+      window.location.href = "/";
     } catch (_) {}
   };
 
