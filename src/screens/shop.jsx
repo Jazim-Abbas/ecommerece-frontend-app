@@ -10,10 +10,13 @@ import ShopItems from "../components/shop/shop-item-list";
 export default function ShopScreen() {
   const [shop, setShop] = useState();
   const [showItemModal, setShowItemModal] = useState(false);
+  const [newItem, setNewItem] = useState();
 
   const handleShopUpdate = (shop) => {
     setShop(shop);
   };
+
+  const handleItemAdded = (item) => {};
 
   return (
     <BaseLayout hasSearch={false}>
@@ -41,11 +44,12 @@ export default function ShopScreen() {
             <ItemModal
               show={showItemModal}
               onHide={() => setShowItemModal(false)}
+              onItemAdded={handleItemAdded}
             />
           </div>
         </div>
         <div className="row g-3 mt-2">
-          <ShopItems shop={shop} />
+          <ShopItems shop={shop} newItem={newItem} />
         </div>
       </div>
     </BaseLayout>

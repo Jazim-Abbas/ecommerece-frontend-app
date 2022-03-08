@@ -6,15 +6,26 @@ import useApi from "../../hooks/use-api";
 import AppLoading from "../loading";
 import { getImageURL } from "../../utils/app";
 
-export default function ShopItems({ shop }) {
+export default function ShopItems({ shop, newItem }) {
   const shopItems = useApi(shopApi.getShopItems, { keyExtractor: "items" });
   //   const [shopItems, setShopItems] = useState([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     if (shop) {
-      shopItems.request(shop.id);
+      shopItems.request(shop.id).then((res) => {
+        const items = res.data.items;
+        setItems(items);
+      });
     }
   }, [shop]);
+
+  useEffect(() => {
+    if (newItem) {
+      const newItems = [...items, newItem];
+      setItems(newItems);
+    }
+  }, [newItem]);
 
   if (!shop) return <></>;
 
@@ -23,7 +34,7 @@ export default function ShopItems({ shop }) {
   if (!shopItems.data) return <></>;
 
   const getShopItems = () => {
-    return shopItems.data;
+    return items;
   };
 
   return getShopItems().map((item, i) => (

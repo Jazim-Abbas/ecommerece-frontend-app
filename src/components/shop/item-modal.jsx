@@ -4,7 +4,7 @@ export default function ItemModal(props) {
   return (
     <Modal {...props} size="lg" centered>
       <Modal.Header closeButton>
-        <Modal.Title id="item-modal">Create or Update Item</Modal.Title>
+        <Modal.Title id="item-modal">Create Item</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form>
@@ -19,9 +19,9 @@ export default function ItemModal(props) {
           <div class="form-group mt-3">
             <label for="category">Select Category</label>
             <select class="form-control" id="category">
-              <option value="ind">Clothing</option>
-              <option value="usa">Entertainment</option>
-              <option value="can">ArtI</option>
+              <option value="1">Clothing</option>
+              <option value="2">Entertainment</option>
+              <option value="3">ArtI</option>
             </select>
           </div>
           <div className="form-group mt-3">
