@@ -5,6 +5,7 @@ import { itemSchema } from "../../utils/validations";
 import { AppForm, FieldError } from "../app-form";
 import * as itemApi from "../../apis/item";
 import useApi from "../../hooks/use-api";
+import ServerError from "../server-error";
 
 export default function ItemModal(props) {
   const newItem = useApi(itemApi.createNewItem, { hasCatchError: true });
@@ -61,6 +62,7 @@ export default function ItemModal(props) {
         <Modal.Title id="item-modal">Create Item</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <ServerError error={newItem.error} />
         <AppForm
           initialValues={initValues}
           validationSchema={itemSchema}
