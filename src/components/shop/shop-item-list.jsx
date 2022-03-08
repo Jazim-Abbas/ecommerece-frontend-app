@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import * as shopApi from "../../apis/shop";
 import useApi from "../../hooks/use-api";
 import AppLoading from "../loading";
+import { getImageURL } from "../../utils/app";
 
 export default function ShopItems({ shop }) {
   const shopItems = useApi(shopApi.getShopItems, { keyExtractor: "items" });
@@ -39,7 +40,10 @@ function ShopItem({ item }) {
   return (
     <Link className="view-link" to={`/item/${item.id}`}>
       <Card>
-        <Card.Img variant="top" src={imageURL} />
+        <Card.Img
+          variant="top"
+          src={item.image ? getImageURL(item.image) : imageURL}
+        />
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
