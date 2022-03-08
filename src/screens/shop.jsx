@@ -45,6 +45,7 @@ export default function ShopScreen() {
               show={showItemModal}
               onHide={() => setShowItemModal(false)}
               onItemAdded={handleItemAdded}
+              shop={shop}
             />
           </div>
         </div>

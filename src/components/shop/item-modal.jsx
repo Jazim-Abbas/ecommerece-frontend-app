@@ -3,8 +3,11 @@ import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { itemSchema } from "../../utils/validations";
 import { AppForm, FieldError } from "../app-form";
+import * as itemApi from "../../apis/item";
+import useApi from "../../hooks/use-api";
 
 export default function ItemModal(props) {
+  const newItem = useApi(itemApi.createNewItem, { hasCatchError: true });
   const [itemImgs, setItemImgs] = useState([]);
   const [featuredImg, setFeaturedImg] = useState("");
 
@@ -34,9 +37,21 @@ export default function ItemModal(props) {
     }
   };
 
-  const handleSubmit = ({ formValues }) => {
+  const handleSubmit = async ({ formValues }) => {
     console.log("formvalues: ", formValues);
-    props.onItemAdded(formValues);
+
+    const itemFields = {
+      ...formValues,
+      image: itemImgs,
+      featured: featuredImg,
+      shopId: props.shop.id,
+    };
+
+    try {
+      await newItem.request(itemFields);
+      props.onItemAdded(formValues);
+      props.onHide();
+    } catch (_) {}
   };
 
   return (
