@@ -20,3 +20,12 @@ export const profileSchema = yup.object().shape({
   country: yup.string().nullable().notRequired(),
   dateOfBirth: yup.string().nullable().notRequired(),
 });
+
+export const itemSchema = yup.object().shape({
+  name: yup.string().required(),
+  categoryId: yup.number().required(),
+  description: yup.string().required(),
+  price: yup.number().required(),
+  quantity: yup.number().required(),
+  shopId: yup.number().required(),
+});
