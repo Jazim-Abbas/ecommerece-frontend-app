@@ -1,22 +1,23 @@
 import BaseLayout from "../layouts/base";
 import * as shopApi from "../apis/shop";
+import * as itemCategoryApi from "../apis/item-category";
 import useApi from "../hooks/use-api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppLoading } from "../components";
 import { Link } from "react-router-dom";
 
 export default function ItemCategoryScreen() {
-  const shopExistsApi = useApi(shopApi.isShopExists, {
-    keyExtractor: "isShopExists",
+  const shopDetailApi = useApi(shopApi.getShopDetail, {
+    keyExtractor: "shop",
   });
 
   useEffect(() => {
-    shopExistsApi.request();
+    shopDetailApi.request();
   }, []);
 
-  if (shopExistsApi.isLoading) return <AppLoading />;
+  if (shopDetailApi.isLoading) return <AppLoading />;
 
-  if (shopExistsApi.data === false) {
+  if (!shopDetailApi.data) {
     return (
       <BaseLayout>
         <div className="alert alert-danger">
@@ -29,27 +30,42 @@ export default function ItemCategoryScreen() {
 
   return (
     <BaseLayout>
-      <CategoryList />
+      <CategoryList shop={shopDetailApi.data} />
     </BaseLayout>
   );
 }
 
-function CategoryList() {
+function CategoryList({ shop }) {
+  const [categories, setCategories] = useState([]);
+  const categoryiesApi = useApi(itemCategoryApi.getAllCategories);
+
+  useEffect(() => {
+    categoryiesApi.request(shop.id).then((res) => {
+      const categories = res.data.categories;
+      setCategories(categories);
+    });
+  }, []);
+
+  if (categoryiesApi.isLoading) return <AppLoading />;
+
   return (
     <table className="table table-bordered table-hover">
       <thead>
         <tr>
+          <th>ID</th>
           <th>Name</th>
-          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>First Category</td>
-          <td>
-            <i className="fa fa-times pointer" aria-hidden="true" />
-          </td>
-        </tr>
+        {categories.map((categ) => (
+          <tr key={categ.id}>
+            <td>{categ.id}</td>
+            <td>{categ.name}</td>
+            {/* <td>
+              <i className="fa fa-times pointer" aria-hidden="true" />
+            </td> */}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
