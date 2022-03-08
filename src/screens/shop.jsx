@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Card, Button, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 import BaseLayout from "../layouts/base";
 import { Link } from "react-router-dom";
+import UpdateShop from "../components/shop/update-shop";
 
 export default function ShopScreen() {
   const [showItemModal, setShowItemModal] = useState(false);
@@ -11,17 +12,7 @@ export default function ShopScreen() {
     <BaseLayout hasSearch={false}>
       <h3 className="text-center">Shop</h3>
       <hr />
-      <form className="mt-4">
-        <div className="form-group">
-          <label htmlFor="shop_image">Shop Picture</label>
-          <input type="file" className="form-control" id="shop_image" />
-        </div>
-        <div className="form-group mt-3">
-          <label htmlFor="shop_name">Shop Name</label>
-          <input type="text" className="form-control" id="shop_name" />
-        </div>
-        <button className="btn btn-success mt-3">Save Changes</button>
-      </form>
+      <UpdateShop />
       <hr />
 
       <div className="mt-5">
