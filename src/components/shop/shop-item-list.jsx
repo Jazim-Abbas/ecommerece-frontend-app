@@ -59,7 +59,7 @@ function ShopItem({ item }) {
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
-          <Card.Text>Category</Card.Text>
+          <Card.Text>Category: {item.ItemCategory.name}</Card.Text>
           <Card.Text>Total Sales: {item.salesCount}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
