@@ -25,34 +25,35 @@ export default function ShopItems({ shop }) {
     return shopItems.data;
   };
 
-  return getShopItems().map((_, i) => (
+  return getShopItems().map((item, i) => (
     <div className="col-md-3">
-      <ShopItem key={i} />
+      <ShopItem key={i} item={item} />
     </div>
   ));
 }
 
-function ShopItem() {
+function ShopItem({ item }) {
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
   return (
-    <Link className="view-link" to="/item/1">
+    <Link className="view-link" to={`/item/${item.id}`}>
       <Card>
         <Card.Img variant="top" src={imageURL} />
         <Card.Body>
-          <Card.Title>Item Name</Card.Title>
-          <Card.Text>Price: $32</Card.Text>
+          <Card.Title>Item Name: {item.name}</Card.Title>
+          <Card.Text>Price: ${item.price}</Card.Text>
           <Card.Text>Category</Card.Text>
-          <Card.Text>Total Sales: $20</Card.Text>
+          <Card.Text>Total Sales: {item.salesCount}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroupItem>
-            <p>Description</p>
+            <p>{item.description}</p>
           </ListGroupItem>
           <ListGroupItem>
-            <i class="fa fa-heart float-left pointer" aria-hidden="true" />
-            <i className="mx-3">Available</i>
+            <i className="">
+              {item.quantity === 0 ? "Not Available" : "Available"}
+            </i>
           </ListGroupItem>
         </ListGroup>
       </Card>
