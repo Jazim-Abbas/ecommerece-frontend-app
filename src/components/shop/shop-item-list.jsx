@@ -53,7 +53,7 @@ function ShopItem({ item }) {
       <Card>
         <Card.Img
           variant="top"
-          src={item.image ? getImageURL(item.image) : imageURL}
+          src={item.featuredImage ? getImageURL(item.featuredImage) : imageURL}
         />
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>

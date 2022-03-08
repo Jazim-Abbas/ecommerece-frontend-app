@@ -48,9 +48,9 @@ export default function ItemModal(props) {
     };
 
     try {
-      await newItem.request(itemFields);
-      props.onItemAdded(formValues);
-      props.onHide();
+      newItem.request(itemFields);
+    //   props.onItemAdded(formValues);
+    //   props.onHide();
     } catch (_) {}
   };
 

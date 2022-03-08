@@ -13,15 +13,22 @@ export function createNewItem(item) {
   let fd = new FormData();
   setFieldsToFormData(fd, item);
 
+  console.log("fd: ", fd);
+
   return api.post("/item", fd, config);
 }
 
 function setFieldsToFormData(fd, fields) {
+  // console.log("fields: ", fields);
+
   for (const key in fields) {
-    if (fields[key] === Array) {
-      for (const item in fields[key]) {
+    // console.log("key: ", key);
+    // console.log("__: ", fields[key]);
+    if (Array.isArray(fields[key])) {
+      fields[key].forEach((item) => {
+        // console.log("item: ", item);
         fd.append(key, item);
-      }
+      });
     } else {
       fd.append(key, fields[key]);
     }
