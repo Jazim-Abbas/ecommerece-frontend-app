@@ -8,13 +8,18 @@ import ItemModal from "../components/shop/item-modal";
 import ShopItems from "../components/shop/shop-item-list";
 
 export default function ShopScreen() {
+  const [shop, setShop] = useState();
   const [showItemModal, setShowItemModal] = useState(false);
+
+  const handleShopUpdate = (shop) => {
+    setShop(shop);
+  };
 
   return (
     <BaseLayout hasSearch={false}>
       <h3 className="text-center">Shop</h3>
       <hr />
-      <UpdateShop />
+      <UpdateShop onShopReceived={handleShopUpdate} />
       <hr />
 
       <div className="mt-5">
@@ -40,7 +45,7 @@ export default function ShopScreen() {
           </div>
         </div>
         <div className="row g-3 mt-2">
-          <ShopItems />
+          <ShopItems shop={shop} />
         </div>
       </div>
     </BaseLayout>

@@ -5,7 +5,7 @@ import { getImageURL } from "../../utils/app";
 import AppLoading from "../loading";
 import ServerError from "../server-error";
 
-export default function UpdateShop() {
+export default function UpdateShop({ onShopReceived }) {
   const [shopname, setShopname] = useState("");
   const [shopImg, setShopImg] = useState("");
   const shopDetail = useApi(shopApi.getShopDetail, { keyExtractor: "shop" });
@@ -15,6 +15,7 @@ export default function UpdateShop() {
     shopDetail.request().then((res) => {
       const shop = res.data.shop;
       setShopname(shop.name);
+      onShopReceived(shop);
     });
   }, []);
 

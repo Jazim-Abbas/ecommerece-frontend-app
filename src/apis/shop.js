@@ -16,6 +16,10 @@ export function getShopDetail() {
   return api.get("/shop");
 }
 
+export function getShopItems(shopId) {
+  return api.get("/shop/" + shopId);
+}
+
 export function updateShop(shop) {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
   let fd = new FormData();

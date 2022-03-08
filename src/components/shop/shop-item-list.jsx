@@ -1,10 +1,31 @@
 import { Link } from "react-router-dom";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import * as shopApi from "../../apis/shop";
+import useApi from "../../hooks/use-api";
+import AppLoading from "../loading";
 
-export default function ShopItems() {
-  const items = [1, 2, 3, 4, 5];
+export default function ShopItems({ shop }) {
+  const shopItems = useApi(shopApi.getShopItems, { keyExtractor: "items" });
+  //   const [shopItems, setShopItems] = useState([]);
 
-  return items.map((_, i) => (
+  useEffect(() => {
+    if (shop) {
+      shopItems.request(shop.id);
+    }
+  }, [shop]);
+
+  if (!shop) return <></>;
+
+  if (shopItems.isLoading) return <AppLoading />;
+
+  if (!shopItems.data) return <></>;
+
+  const getShopItems = () => {
+    return shopItems.data;
+  };
+
+  return getShopItems().map((_, i) => (
     <div className="col-md-3">
       <ShopItem key={i} />
     </div>
