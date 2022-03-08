@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Card, Button, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
 import BaseLayout from "../layouts/base";
@@ -6,12 +6,30 @@ import { Link } from "react-router-dom";
 import UpdateShop from "../components/shop/update-shop";
 import ItemModal from "../components/shop/item-modal";
 import ShopItems from "../components/shop/shop-item-list";
+import * as itemCategoryApi from "../apis/item-category";
+import useApi from "../hooks/use-api";
+import { AppLoading } from "../components";
 
 export default function ShopScreen() {
   const [shop, setShop] = useState();
   const [showItemModal, setShowItemModal] = useState(false);
   const [newItem, setNewItem] = useState();
   const [searchVal, setSearchVal] = useState("");
+  const allCategories = useApi(itemCategoryApi.getAllCategories, {
+    keyExtractor: "categories",
+  });
+
+  // useEffect(() => {
+  //   if (shop) {
+  //     allCategories.request(shop.id);
+  //   }
+  // }, [shop]);
+
+  // if (allCategories.isLoading) return <AppLoading />;
+
+  // console.log("categories: ", allCategories.data);
+
+  // if (!allCategories.data) return <p>Loading</p>;
 
   const handleSearch = (e) => {
     setSearchVal(e.target.value);
@@ -55,6 +73,7 @@ export default function ShopScreen() {
               onHide={() => setShowItemModal(false)}
               onItemAdded={handleItemAdded}
               shop={shop}
+              // categories={allCategories.data}
             />
           </div>
         </div>

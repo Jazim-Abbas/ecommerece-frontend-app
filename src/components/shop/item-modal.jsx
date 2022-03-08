@@ -1,16 +1,32 @@
 import { Field } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { itemSchema } from "../../utils/validations";
 import { AppForm, FieldError } from "../app-form";
 import * as itemApi from "../../apis/item";
+import * as itemCategoryApi from "../../apis/item-category";
 import useApi from "../../hooks/use-api";
 import ServerError from "../server-error";
+import AppLoading from "../loading";
 
 export default function ItemModal(props) {
   const newItem = useApi(itemApi.createNewItem, { hasCatchError: true });
   const [itemImgs, setItemImgs] = useState([]);
   const [featuredImg, setFeaturedImg] = useState("");
+  const allCategories = useApi(itemCategoryApi.getAllCategories, {
+    keyExtractor: "categories",
+  });
+
+  useEffect(() => {
+    if (props.shop) {
+      console.log("shop: ", props.shop);
+      allCategories.request(props.shop.id);
+    }
+  }, [props.shop]);
+
+  if (allCategories.isLoading) return <AppLoading />;
+
+  if (!allCategories.data) return <></>;
 
   const localImageURL = () => {
     return URL.createObjectURL(featuredImg);
@@ -127,9 +143,11 @@ export default function ItemModal(props) {
               id="category"
               name="categoryId"
             >
-              <option value="1">Clothing</option>
-              <option value="2">Entertainment</option>
-              <option value="3">Art</option>
+              {allCategories.data.map((categ) => (
+                <option key={categ.id} value={categ.id}>
+                  {categ.name}
+                </option>
+              ))}
             </Field>
             <FieldError field="categoryId" />
           </div>
