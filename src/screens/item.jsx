@@ -157,26 +157,35 @@ function Cart({ item }) {
 
   return (
     <>
-      <ListGroup.Item>
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={handleDecrement}
-          disabled={cartValue === 1}
-        >
-          <i class="fa fa-minus" aria-hidden="true" />
-        </button>
-        <span className="mx-5">{cartValue}</span>
-        <button className="btn btn-primary btn-sm" onClick={handleIncrement}>
-          <i class="fa fa-plus" aria-hidden="true" />
-        </button>
-      </ListGroup.Item>
-      <ListGroup.Item>
-        <div className="d-grid">
-          <Button variant="light" size="lg" onClick={handleAddToCart}>
-            Add to Cart
-          </Button>
-        </div>
-      </ListGroup.Item>
+      {item.quantity > 0 && (
+        <ListGroup.Item>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleDecrement}
+            disabled={cartValue === 1}
+          >
+            <i class="fa fa-minus" aria-hidden="true" />
+          </button>
+          <span className="mx-5">{cartValue}</span>
+          <button className="btn btn-primary btn-sm" onClick={handleIncrement}>
+            <i class="fa fa-plus" aria-hidden="true" />
+          </button>
+        </ListGroup.Item>
+      )}
+      {item.quantity > 0 && (
+        <ListGroup.Item>
+          <div className="d-grid">
+            <Button variant="light" size="lg" onClick={handleAddToCart}>
+              Add to Cart
+            </Button>
+          </div>
+        </ListGroup.Item>
+      )}
+      {item.quantity === 0 && (
+        <ListGroup.Item>
+          <i>Item Not Available</i>
+        </ListGroup.Item>
+      )}
     </>
   );
 }
