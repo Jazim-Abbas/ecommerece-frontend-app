@@ -48,9 +48,10 @@ export default function ItemModal(props) {
     };
 
     try {
-      newItem.request(itemFields);
-    //   props.onItemAdded(formValues);
-    //   props.onHide();
+      const res = await newItem.request(itemFields);
+      const newCreatedItem = res.data.item;
+      props.onItemAdded(newCreatedItem);
+      props.onHide();
     } catch (_) {}
   };
 

@@ -16,7 +16,9 @@ export default function ShopScreen() {
     setShop(shop);
   };
 
-  const handleItemAdded = (item) => {};
+  const handleItemAdded = (item) => {
+    setNewItem(item);
+  };
 
   return (
     <BaseLayout hasSearch={false}>
