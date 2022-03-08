@@ -11,3 +11,7 @@ export function checkAvailablity(shop) {
 export function createNewShop(shop) {
   return api.post("/shop", shop);
 }
+
+export function getShopDetail() {
+  return api.get("/shop");
+}
