@@ -1,9 +1,30 @@
 import { Field } from "formik";
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { itemSchema } from "../../utils/validations";
-import { AppForm } from "../app-form";
+import { AppForm, FieldError } from "../app-form";
 
 export default function ItemModal(props) {
+  const [itemImgs, setItemImgs] = useState([]);
+
+  const localImageURLs = () => {
+    if (itemImgs.length > 0) {
+      return itemImgs.map((img) => URL.createObjectURL(img));
+    }
+
+    return [];
+  };
+
+  const handleInputFileChange = (e) => {
+    const files = [...e.target.files];
+    if (files.length > 3) {
+      alert("Please use only 3 files");
+      return;
+    } else {
+      setItemImgs(files);
+    }
+  };
+
   const handleSubmit = ({ formValues }) => {
     console.log("formvalues: ", formValues);
     props.onItemAdded(formValues);
@@ -20,9 +41,27 @@ export default function ItemModal(props) {
           validationSchema={itemSchema}
           handleSubmit={handleSubmit}
         >
+          <div className="my-3">
+            {localImageURLs().map((imgURL) => (
+              <img
+                key={imgURL}
+                src={imgURL}
+                alt="Item Image"
+                width="200"
+                className="mx-2"
+              />
+            ))}
+          </div>
           <div className="form-group">
             <label htmlFor="item_image">Item Image</label>
-            <input type="file" className="form-control" id="item_image" />
+            <input
+              type="file"
+              className="form-control"
+              id="item_image"
+              multiple
+              onChange={handleInputFileChange}
+              max="3"
+            />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="item_name">Item Name</label>
@@ -32,6 +71,7 @@ export default function ItemModal(props) {
               id="item_name"
               name="name"
             />
+            <FieldError field="name" />
           </div>
           <div class="form-group mt-3">
             <label for="category">Select Category</label>
@@ -45,6 +85,7 @@ export default function ItemModal(props) {
               <option value="2">Entertainment</option>
               <option value="3">Art</option>
             </Field>
+            <FieldError field="categoryId" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="description">Description</label>
@@ -54,6 +95,7 @@ export default function ItemModal(props) {
               id="description"
               name="description"
             />
+            <FieldError field="description" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="price">Price</label>
@@ -63,6 +105,7 @@ export default function ItemModal(props) {
               id="price"
               name="price"
             />
+            <FieldError field="price" />
           </div>
           <div className="form-group mt-3">
             <label htmlFor="stock_qty">Stock Quantity</label>
@@ -72,8 +115,11 @@ export default function ItemModal(props) {
               id="stock_qty"
               name="quantity"
             />
+            <FieldError field="quantity" />
           </div>
-          <button className="btn btn-success mt-3">Save Changes</button>
+          <button type="submit" className="btn btn-success mt-3">
+            Save Changes
+          </button>
         </AppForm>
       </Modal.Body>
     </Modal>

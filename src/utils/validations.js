@@ -27,5 +27,4 @@ export const itemSchema = yup.object().shape({
   description: yup.string().required(),
   price: yup.number().required(),
   quantity: yup.number().required(),
-  shopId: yup.number().required(),
 });
