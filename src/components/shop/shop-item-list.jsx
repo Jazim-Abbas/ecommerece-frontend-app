@@ -6,7 +6,7 @@ import useApi from "../../hooks/use-api";
 import AppLoading from "../loading";
 import { getImageURL } from "../../utils/app";
 
-export default function ShopItems({ shop, newItem }) {
+export default function ShopItems({ shop, newItem, searchVal }) {
   const shopItems = useApi(shopApi.getShopItems, { keyExtractor: "items" });
   //   const [shopItems, setShopItems] = useState([]);
   const [items, setItems] = useState([]);
@@ -34,7 +34,8 @@ export default function ShopItems({ shop, newItem }) {
   if (!shopItems.data) return <></>;
 
   const getShopItems = () => {
-    return items;
+    if (searchVal === "") return items;
+    return items.filter((item) => item.name.toLowerCase().includes(searchVal));
   };
 
   return getShopItems().map((item, i) => (

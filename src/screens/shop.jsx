@@ -11,6 +11,11 @@ export default function ShopScreen() {
   const [shop, setShop] = useState();
   const [showItemModal, setShowItemModal] = useState(false);
   const [newItem, setNewItem] = useState();
+  const [searchVal, setSearchVal] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchVal(e.target.value);
+  };
 
   const handleShopUpdate = (shop) => {
     setShop(shop);
@@ -34,6 +39,8 @@ export default function ShopScreen() {
               type="text"
               className="form-control"
               placeholder="Search items .."
+              value={searchVal}
+              onChange={handleSearch}
             />
           </div>
           <div className="col-md-6">
@@ -52,7 +59,7 @@ export default function ShopScreen() {
           </div>
         </div>
         <div className="row g-3 mt-2">
-          <ShopItems shop={shop} newItem={newItem} />
+          <ShopItems shop={shop} newItem={newItem} searchVal={searchVal} />
         </div>
       </div>
     </BaseLayout>
