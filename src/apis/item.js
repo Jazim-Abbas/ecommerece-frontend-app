@@ -7,3 +7,5 @@ export function getAllItems() {
 export function getItem(id) {
   return api.get("/item/" + id);
 }
+
+export function createNewItem(item) {}

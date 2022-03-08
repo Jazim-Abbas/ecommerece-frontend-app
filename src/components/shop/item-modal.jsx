@@ -6,6 +6,11 @@ import { AppForm, FieldError } from "../app-form";
 
 export default function ItemModal(props) {
   const [itemImgs, setItemImgs] = useState([]);
+  const [featuredImg, setFeaturedImg] = useState("");
+
+  const localImageURL = () => {
+    return URL.createObjectURL(featuredImg);
+  };
 
   const localImageURLs = () => {
     if (itemImgs.length > 0) {
@@ -13,6 +18,10 @@ export default function ItemModal(props) {
     }
 
     return [];
+  };
+
+  const handleFeaturedImg = (e) => {
+    setFeaturedImg(e.target.files[0]);
   };
 
   const handleInputFileChange = (e) => {
@@ -61,6 +70,25 @@ export default function ItemModal(props) {
               multiple
               onChange={handleInputFileChange}
               max="3"
+            />
+          </div>
+          <div className="my-3">
+            {featuredImg && (
+              <img
+                src={localImageURL()}
+                alt="Item Image"
+                width="200"
+                className="mx-2"
+              />
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="item_image">Featured Item Image</label>
+            <input
+              type="file"
+              className="form-control"
+              id="item_image"
+              onChange={handleFeaturedImg}
             />
           </div>
           <div className="form-group mt-3">
