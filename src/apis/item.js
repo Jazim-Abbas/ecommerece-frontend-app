@@ -13,8 +13,6 @@ export function createNewItem(item) {
   let fd = new FormData();
   setFieldsToFormData(fd, item);
 
-  console.log("fd: ", fd);
-
   return api.post("/item", fd, config);
 }
 

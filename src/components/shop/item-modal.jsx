@@ -8,6 +8,7 @@ import * as itemCategoryApi from "../../apis/item-category";
 import useApi from "../../hooks/use-api";
 import ServerError from "../server-error";
 import AppLoading from "../loading";
+import { Link } from "react-router-dom";
 
 export default function ItemModal(props) {
   const newItem = useApi(itemApi.createNewItem, { hasCatchError: true });
@@ -135,22 +136,31 @@ export default function ItemModal(props) {
             />
             <FieldError field="name" />
           </div>
-          <div class="form-group mt-3">
-            <label for="category">Select Category</label>
-            <Field
-              component="select"
-              class="form-control"
-              id="category"
-              name="categoryId"
-            >
-              {allCategories.data.map((categ) => (
-                <option key={categ.id} value={categ.id}>
-                  {categ.name}
-                </option>
-              ))}
-            </Field>
-            <FieldError field="categoryId" />
-          </div>
+          {allCategories.data.length === 0 && (
+            <div className="alert alert-info mt-3">
+              <p>Please Create Item Category First</p>
+              <Link to="/item-category">Create Item Category</Link>
+            </div>
+          )}
+          {allCategories.data.length > 0 && (
+            <div class="form-group mt-3">
+              <label for="category">Select Category</label>
+              <Field
+                component="select"
+                class="form-control"
+                id="category"
+                name="categoryId"
+              >
+                <option>------</option>
+                {allCategories.data.map((categ) => (
+                  <option key={categ.id} value={categ.id}>
+                    {categ.name}
+                  </option>
+                ))}
+              </Field>
+              <FieldError field="categoryId" />
+            </div>
+          )}
           <div className="form-group mt-3">
             <label htmlFor="description">Description</label>
             <Field
@@ -181,7 +191,11 @@ export default function ItemModal(props) {
             />
             <FieldError field="quantity" />
           </div>
-          <button type="submit" className="btn btn-success mt-3">
+          <button
+            type="submit"
+            className="btn btn-success mt-3"
+            disabled={allCategories.data.length === 0}
+          >
             Save Changes
           </button>
         </AppForm>
@@ -191,9 +205,9 @@ export default function ItemModal(props) {
 }
 
 const initValues = {
-  name: "item",
-  categoryId: "1",
-  description: "description",
-  price: "100",
-  quantity: "3",
+  name: "",
+  categoryId: "",
+  description: "",
+  price: "",
+  quantity: "",
 };
