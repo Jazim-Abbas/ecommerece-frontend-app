@@ -21,6 +21,7 @@ export default function CartPage() {
       });
       await checkout.request({ items: checkoutItems });
       console.log("checkout items: ", checkoutItems);
+      cartCtx.onResetCart();
       history.push("/purchases");
     } catch (_) {}
   };
