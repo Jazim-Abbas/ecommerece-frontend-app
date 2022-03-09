@@ -39,7 +39,7 @@ export default function CartPage() {
           {checkout.isLoading && <AppLoading />}
           {!checkout.isLoading && (
             <button
-              className="btn btn-success"
+              className="btn btn-success mb-5"
               onClick={navigateToPurchases}
               disabled={Object.keys(cartCtx.cart).length === 0}
             >

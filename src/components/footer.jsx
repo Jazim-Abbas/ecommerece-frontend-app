@@ -22,7 +22,7 @@ const currencyObj = {
   usa: "usd",
 };
 
-export default function AppFooter({ hasFixedBottom = false }) {
+export default function AppFooter({ hasFixedBottom = true }) {
   const [selectCountry, setSelectCountry] = useState(false);
   const [country, setCountry] = useState("ind");
 
@@ -37,14 +37,14 @@ export default function AppFooter({ hasFixedBottom = false }) {
       className={`mt-5 ${hasFixedBottom ? "fixed-bottom" : ""}`}
     >
       <Container>
-        <Navbar.Brand href="#" as={Link} to="/">
+        {/* <Navbar.Brand href="#" as={Link} to="/">
           Etsy
-        </Navbar.Brand>
-        <Nav className="me-auto">
+        </Navbar.Brand> */}
+        <Nav className="mx-auto">
           <Nav.Link onClick={() => setSelectCountry(true)}>
             Select Country
           </Nav.Link>
-          {country && (
+          {country !== "" && (
             <>
               <Nav.Link>Your Country: {countryObj[country]}</Nav.Link>
               <Nav.Link>Current Currency: {currencyObj[country]}</Nav.Link>
@@ -78,7 +78,7 @@ function CountryModal(props) {
             value={props.country}
             onChange={(e) => props.handleChangeCountry(e.target.value)}
           >
-            <option>-------</option>
+            <option value="">-------</option>
             <option value="usa">USA</option>
             <option value="ind">INDIA</option>
           </select>
