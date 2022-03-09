@@ -35,7 +35,7 @@ export default function ItemScreen() {
     <BaseLayout>
       <div className="row">
         <div className="col-md-6">
-          <ItemImagesCarousel itemImages={item.ItemImages} />
+          <ItemImagesCarousel featuredImage={item.featuredImage} />
         </div>
         <div className="col-md-6">
           <ListGroup>
@@ -118,22 +118,20 @@ function Fav({ item }) {
   );
 }
 
-function ItemImagesCarousel({ itemImages }) {
-  if (itemImages.length === 0) {
-    return <p className="alert alert-info">No Images for this item</p>;
+function ItemImagesCarousel({ featuredImage }) {
+  if (featuredImage === 0) {
+    return <p className="alert alert-info">No Image for this item</p>;
   }
 
   return (
     <Carousel>
-      {itemImages.map((itemImg) => (
-        <Carousel.Item>
-          <img
-            src={getImageURL(itemImg.image)}
-            alt="Single Item Image"
-            className="d-block w-100"
-          />
-        </Carousel.Item>
-      ))}
+      <Carousel.Item>
+        <img
+          src={getImageURL(featuredImage)}
+          alt="Single Item Image"
+          className="d-block w-100"
+        />
+      </Carousel.Item>
     </Carousel>
   );
 }

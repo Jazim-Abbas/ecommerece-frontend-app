@@ -85,7 +85,7 @@ export default function ItemModal(props) {
           validationSchema={itemSchema}
           handleSubmit={handleSubmit}
         >
-          <div className="my-3">
+          {/* <div className="my-3">
             {localImageURLs().map((imgURL) => (
               <img
                 key={imgURL}
@@ -106,7 +106,7 @@ export default function ItemModal(props) {
               onChange={handleInputFileChange}
               max="3"
             />
-          </div>
+          </div> */}
           <div className="my-3">
             {featuredImg && (
               <img
