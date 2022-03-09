@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { useSearchContext } from "../contexts/search-context";
 
 export default function AppNavbar({ hasSearch = true }) {
+  const searchCtx = useSearchContext();
   const [showFilter, setShowFilter] = useState(false);
 
   const handleLogout = () => {
@@ -76,7 +77,11 @@ export default function AppNavbar({ hasSearch = true }) {
               <Button variant="outline-success">Search</Button>
             </Form>
           )}
-          <FilterModal show={showFilter} onHide={() => setShowFilter(false)} />
+          <FilterModal
+            show={showFilter}
+            onHide={() => setShowFilter(false)}
+            searchCtx={searchCtx}
+          />
         </Navbar.Collapse>
       </Container>
     </Navbar>
@@ -84,6 +89,8 @@ export default function AppNavbar({ hasSearch = true }) {
 }
 
 function FilterModal(props) {
+  const searchCtx = props.searchCtx;
+
   return (
     <Modal {...props} size="lg" centered>
       <Modal.Header closeButton>
@@ -96,7 +103,13 @@ function FilterModal(props) {
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="sort_key">Sort Key</label>
-                <select name="" id="sort_key" className="form-control">
+                <select
+                  name=""
+                  id="sort_key"
+                  className="form-control"
+                  value={searchCtx.data.sort.sortKey}
+                  onChange={(e) => searchCtx.handleSortKey(e.target.value)}
+                >
                   <option>-------</option>
                   <option value="price">Price</option>
                   <option value="quantity">Quantity</option>
@@ -107,7 +120,13 @@ function FilterModal(props) {
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="sort_order">Sort Order</label>
-                <select name="" id="sort_order" className="form-control">
+                <select
+                  name=""
+                  id="sort_order"
+                  className="form-control"
+                  value={searchCtx.data.sort.sortOrder}
+                  onChange={(e) => searchCtx.handleSortOrder(e.target.value)}
+                >
                   <option>-------</option>
                   <option value="asc">ASC</option>
                   <option value="desc">DESC</option>
@@ -123,13 +142,23 @@ function FilterModal(props) {
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="min_price">Min Price</label>
-                <input type="number" className="form-control" />
+                <input
+                  type="number"
+                  className="form-control"
+                  value={searchCtx.data.priceRange.min}
+                  onChange={(e) => searchCtx.handleMinPrice(e.target.value)}
+                />
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="max_price">Max Price</label>
-                <input type="number" className="form-control" />
+                <input
+                  type="number"
+                  className="form-control"
+                  value={searchCtx.data.priceRange.max}
+                  onChange={(e) => searchCtx.handleMaxPrice(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -139,14 +168,18 @@ function FilterModal(props) {
           <h4>Exclude Out of Stock Items</h4>
           <div className="form-check-inline">
             <label className="form-check-label">
-              <input type="checkbox" className="form-check-input" value="" />
+              <input
+                type="checkbox"
+                className="form-check-input"
+                checked={searchCtx.data.isOutOfStock}
+                onChange={(e) => searchCtx.handleIsOutOfStock(e.target.checked)}
+              />
               {"  "}
               Exclude out of Stock Items
             </label>
           </div>
         </div>
         <hr />
-        <button className="btn btn-success">Save</button>
       </Modal.Body>
     </Modal>
   );
