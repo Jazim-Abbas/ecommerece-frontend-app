@@ -19,6 +19,7 @@ const SearchContext = React.createContext({
   handleMinPrice: () => {},
   handleMaxPrice: () => {},
   handleIsOutOfStock: () => {},
+  handleReset: () => {},
 });
 
 export function SearchProvider({ children }) {
@@ -53,6 +54,14 @@ export function SearchProvider({ children }) {
     setIsOutOfStock(val);
   };
 
+  const handleReset = () => {
+    setSortKey("");
+    setSortOrder("");
+    setMinPrice("");
+    setMaxPrice("");
+    setIsOutOfStock(false);
+  };
+
   return (
     <SearchContext.Provider
       value={{
@@ -68,6 +77,7 @@ export function SearchProvider({ children }) {
         handleMinPrice,
         handleMaxPrice,
         handleIsOutOfStock,
+        handleReset,
       }}
     >
       {children}

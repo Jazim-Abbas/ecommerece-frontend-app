@@ -180,6 +180,12 @@ function FilterModal(props) {
           </div>
         </div>
         <hr />
+        <button
+          className="btn btn-danger"
+          onClick={() => searchCtx.handleReset()}
+        >
+          Reset
+        </button>
       </Modal.Body>
     </Modal>
   );
