@@ -10,6 +10,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useSearchContext } from "../contexts/search-context";
 
 export default function AppNavbar({ hasSearch = true }) {
   const [showFilter, setShowFilter] = useState(false);
