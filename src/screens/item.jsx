@@ -141,7 +141,7 @@ function ItemImagesCarousel({ itemImages }) {
 function Cart({ item }) {
   const cartCtx = useCartContext();
   const cartItem = cartCtx.cart[item.id];
-  const [cartValue, setCartValue] = useState(cartItem ? cartItem.quantity : 1);
+  const [cartValue, setCartValue] = useState(1);
 
   const handleIncrement = () => {
     setCartValue((prev) => prev + 1);
