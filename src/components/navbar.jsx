@@ -73,6 +73,8 @@ export default function AppNavbar({ hasSearch = true }) {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
+                value={searchCtx.data.searchVal}
+                onChange={(e) => searchCtx.handleSearchVal(e.target.value)}
               />
               <Button variant="outline-success">Search</Button>
             </Form>
