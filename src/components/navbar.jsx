@@ -63,11 +63,6 @@ export default function AppNavbar({ hasSearch = true }) {
           </Nav>
           {hasSearch && (
             <Form className="d-flex">
-              <i
-                class="fa fa-filter pointer d-flex align-items-center mx-3"
-                aria-hidden="true"
-                onClick={() => setShowFilter(true)}
-              />
               <FormControl
                 type="search"
                 placeholder="Search"
@@ -76,9 +71,14 @@ export default function AppNavbar({ hasSearch = true }) {
                 value={searchCtx.data.searchVal}
                 onChange={(e) => searchCtx.handleSearchVal(e.target.value)}
               />
-              <Button variant="outline-success">Search</Button>
+              <i
+                class="fa fa-filter pointer d-flex align-items-center mx-3"
+                aria-hidden="true"
+                onClick={() => setShowFilter(true)}
+              />
             </Form>
           )}
+
           <FilterModal
             show={showFilter}
             onHide={() => setShowFilter(false)}
