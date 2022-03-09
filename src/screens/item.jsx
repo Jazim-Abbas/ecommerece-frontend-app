@@ -167,7 +167,11 @@ function Cart({ item }) {
             <i class="fa fa-minus" aria-hidden="true" />
           </button>
           <span className="mx-5">{cartValue}</span>
-          <button className="btn btn-primary btn-sm" onClick={handleIncrement}>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleIncrement}
+            disabled={cartValue >= item.quantity}
+          >
             <i class="fa fa-plus" aria-hidden="true" />
           </button>
         </ListGroup.Item>
