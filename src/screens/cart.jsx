@@ -7,7 +7,8 @@ export default function CartPage() {
   const history = useHistory();
 
   const navigateToPurchases = () => {
-    history.push("/purchases");
+    alert("checkout");
+    // history.push("/purchases");
   };
 
   return (
@@ -17,7 +18,11 @@ export default function CartPage() {
       <div className="mt-5">
         <CartItems cartCtx={cartCtx} />
         <div className="float-end">
-          <button className="btn btn-success" onClick={navigateToPurchases}>
+          <button
+            className="btn btn-success"
+            onClick={navigateToPurchases}
+            disabled={Object.keys(cartCtx.cart).length === 0}
+          >
             Checkout
           </button>
         </div>
