@@ -147,7 +147,11 @@ function FilterModal(props) {
                 <input
                   type="number"
                   className="form-control"
-                  value={searchCtx.data.priceRange.min}
+                  value={
+                    searchCtx.data.priceRange.min === 0
+                      ? ""
+                      : searchCtx.data.priceRange.min
+                  }
                   onChange={(e) => searchCtx.handleMinPrice(e.target.value)}
                 />
               </div>
@@ -158,7 +162,11 @@ function FilterModal(props) {
                 <input
                   type="number"
                   className="form-control"
-                  value={searchCtx.data.priceRange.max}
+                  value={
+                    searchCtx.data.priceRange.max === 0
+                      ? ""
+                      : searchCtx.data.priceRange.max
+                  }
                   onChange={(e) => searchCtx.handleMaxPrice(e.target.value)}
                 />
               </div>

@@ -26,8 +26,8 @@ export function SearchProvider({ children }) {
   const [searchVal, setSearchVal] = useState("");
   const [sortKey, setSortKey] = useState("");
   const [sortOrder, setSortOrder] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
   const [isOutOfStock, setIsOutOfStock] = useState(false);
 
   const handleSearchVal = (val) => {

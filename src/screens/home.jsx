@@ -4,6 +4,10 @@ import { useHistory, Link } from "react-router-dom";
 import ListItems from "../components/home/list-items";
 import { useSearchContext } from "../contexts/search-context";
 import BaseLayout from "../layouts/base";
+import * as itemsApi from "../apis/item";
+import useApi from "../hooks/use-api";
+import { AppLoading } from "../components";
+import { getImageURL } from "../utils/app";
 
 export default function HomeScreen() {
   return (
@@ -18,38 +22,42 @@ export default function HomeScreen() {
 
 function SearchResults() {
   const searchCtx = useSearchContext();
+  const filterItems = useApi(itemsApi.filterItems, { keyExtractor: "items" });
   const itemsCount = [1, 2, 3, 4];
   const imageURL =
     "https://media.istockphoto.com/photos/bakery-chef-prepare-pizza-picture-id1291299956?b=1&k=20&m=1291299956&s=170667a&w=0&h=Ys_FLtdY0Uzc7yTQl6JzvCHTQ3eRAuqNNU4x8EX1FB8=";
-  const history = useHistory();
 
   useEffect(() => {
     const searchVal = searchCtx.data.searchVal;
     if (searchVal) {
       console.log("search value: ", searchVal);
+      filterItems.request(searchCtx.data);
     }
   }, [searchCtx.data.searchVal]);
 
-  const handleViewItem = () => {
-    history.push("/item/1");
-  };
-
   if (!searchCtx.data.searchVal) return <></>;
 
-  const item = () => {
+  if (filterItems.isLoading) return <AppLoading />;
+
+  if (!filterItems.data) return <></>;
+
+  const item = (filterItem) => {
     return (
-      <Link className="text-decoration-none" to="/item/1">
+      <Link className="text-decoration-none" to={`/item/${filterItem.id}`}>
         <Card>
-          <Card.Img variant="top" src={imageURL} />
+          <Card.Img
+            variant="top"
+            src={getImageURL(filterItem.featured_image)}
+          />
           <ListGroup className="list-group-flush">
             <ListGroupItem>
               <p>
                 <span className="fw-bold">Item Name:</span>
-                <span className="mx-2">Pizza</span>
+                <span className="mx-2">{filterItem.name}</span>
               </p>
               <p>
                 <span className="fw-bold">Item Price:</span>
-                <span className="mx-2">$30</span>
+                <span className="mx-2">${filterItem.price}</span>
               </p>
             </ListGroupItem>
           </ListGroup>
@@ -64,9 +72,9 @@ function SearchResults() {
         Search Results: {searchCtx.data.searchVal}
       </h3>
       <div className="row">
-        {itemsCount.map((_, i) => (
+        {filterItems.data.map((filterItem, i) => (
           <div className="col-md-3" key={i}>
-            {item()}
+            {item(filterItem)}
           </div>
         ))}
         <hr className="mt-3 mb-4" />

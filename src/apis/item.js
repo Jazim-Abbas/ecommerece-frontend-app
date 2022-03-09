@@ -8,6 +8,10 @@ export function getItem(id) {
   return api.get("/item/" + id);
 }
 
+export function filterItems(filterOptions) {
+  return api.post("/item/filter", filterOptions);
+}
+
 export function createNewItem(item) {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
   let fd = new FormData();
