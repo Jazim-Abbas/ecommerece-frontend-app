@@ -10,9 +10,18 @@ import { AppLoading } from "../components";
 import { getImageURL } from "../utils/app";
 
 export default function HomeScreen() {
+  const searchCtx = useSearchContext();
+
+  if (searchCtx.data.searchVal) {
+    return (
+      <BaseLayout>
+        <SearchResults />
+      </BaseLayout>
+    );
+  }
+
   return (
     <BaseLayout>
-      <SearchResults />
       <div className="row g-3">
         <ListItems />
       </div>
