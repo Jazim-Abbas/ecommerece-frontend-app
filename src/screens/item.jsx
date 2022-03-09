@@ -45,7 +45,7 @@ export default function ItemScreen() {
             <ListGroup.Item>
               <p>
                 <span className="fw-bold">Shop Name:</span>
-                <Link to="/shop" className="mx-2">
+                <Link to={`/shop/${item.Shop.id}`} className="mx-2">
                   {item.Shop.name}
                 </Link>
               </p>

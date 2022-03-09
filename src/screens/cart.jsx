@@ -27,7 +27,7 @@ export default function CartPage() {
   };
 
   return (
-    <BaseLayout>
+    <BaseLayout hasSearch={false}>
       <h3 className="text-center">Your Cart</h3>
       <hr />
       <div className="mt-5">

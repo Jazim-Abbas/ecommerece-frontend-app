@@ -76,7 +76,7 @@ function PurchaseItem({ item }) {
           <p>
             <span className="fw-bold">Shop Name:</span>
             <span className="mx-2">
-              <Link to="/shop">{item.Shop.name}</Link>
+              <Link to={`/shop/${item.Shop.id}`}>{item.Shop.name}</Link>
             </span>
           </p>
         </ListGroupItem>
