@@ -12,23 +12,78 @@ import {
 import { Link } from "react-router-dom";
 import { useSearchContext } from "../contexts/search-context";
 
-export default function AppNavbar({ hasSearch = true }) {
-  const searchCtx = useSearchContext();
-  const [showFilter, setShowFilter] = useState(false);
+const countryObj = {
+  ind: "INDIA",
+  usa: "USA",
+};
 
-  const handleLogout = () => {
-    window.localStorage.clear();
-    window.location.replace("/login");
+const currencyObj = {
+  ind: "inr",
+  usa: "usd",
+};
+
+export default function AppFooter({ hasFixedBottom = false }) {
+  const [selectCountry, setSelectCountry] = useState(false);
+  const [country, setCountry] = useState("ind");
+
+  const handleChangeCountry = (country) => {
+    setCountry(country);
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar
+      bg="light"
+      expand="lg"
+      className={`mt-5 ${hasFixedBottom ? "fixed-bottom" : ""}`}
+    >
       <Container>
         <Navbar.Brand href="#" as={Link} to="/">
           Etsy
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbarScroll" />
+        <Nav className="me-auto">
+          <Nav.Link onClick={() => setSelectCountry(true)}>
+            Select Country
+          </Nav.Link>
+          {country && (
+            <>
+              <Nav.Link>Your Country: {countryObj[country]}</Nav.Link>
+              <Nav.Link>Current Currency: {currencyObj[country]}</Nav.Link>
+            </>
+          )}
+        </Nav>
+        <CountryModal
+          show={selectCountry}
+          onHide={() => setSelectCountry(false)}
+          country={country}
+          handleChangeCountry={handleChangeCountry}
+        />
       </Container>
     </Navbar>
+  );
+}
+
+function CountryModal(props) {
+  return (
+    <Modal {...props} size="lg" centered key={"country-modal"}>
+      <Modal.Header closeButton>
+        <Modal.Title id="item-modal">Select Country</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="form-group">
+          <label htmlFor="select_country">Select Country</label>
+          <select
+            name=""
+            id="select_country"
+            className="form-control"
+            value={props.country}
+            onChange={(e) => props.handleChangeCountry(e.target.value)}
+          >
+            <option>-------</option>
+            <option value="usa">USA</option>
+            <option value="ind">INDIA</option>
+          </select>
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 }
