@@ -1,12 +1,14 @@
+import { useEffect } from "react";
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import ListItems from "../components/home/list-items";
+import { useSearchContext } from "../contexts/search-context";
 import BaseLayout from "../layouts/base";
 
 export default function HomeScreen() {
   return (
     <BaseLayout>
-      {/* <SearchResults /> */}
+      <SearchResults />
       <div className="row g-3">
         <ListItems />
       </div>
@@ -15,14 +17,24 @@ export default function HomeScreen() {
 }
 
 function SearchResults() {
+  const searchCtx = useSearchContext();
   const itemsCount = [1, 2, 3, 4];
   const imageURL =
     "https://media.istockphoto.com/photos/bakery-chef-prepare-pizza-picture-id1291299956?b=1&k=20&m=1291299956&s=170667a&w=0&h=Ys_FLtdY0Uzc7yTQl6JzvCHTQ3eRAuqNNU4x8EX1FB8=";
   const history = useHistory();
 
+  useEffect(() => {
+    const searchVal = searchCtx.data.searchVal;
+    if (searchVal) {
+      console.log("search value: ", searchVal);
+    }
+  }, [searchCtx.data.searchVal]);
+
   const handleViewItem = () => {
     history.push("/item/1");
   };
+
+  if (!searchCtx.data.searchVal) return <></>;
 
   const item = () => {
     return (
@@ -48,7 +60,9 @@ function SearchResults() {
 
   return (
     <div>
-      <h3 className="text-center">Search Results: abc</h3>
+      <h3 className="text-center">
+        Search Results: {searchCtx.data.searchVal}
+      </h3>
       <div className="row">
         {itemsCount.map((_, i) => (
           <div className="col-md-3" key={i}>
