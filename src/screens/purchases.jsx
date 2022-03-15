@@ -6,6 +6,7 @@ import * as purchaseApi from "../apis/purchase";
 import useApi from "../hooks/use-api";
 import { useEffect } from "react";
 import { AppLoading } from "../components";
+import { getImageURL } from "../utils/app";
 
 export default function PurchasesScreen() {
   return (
@@ -54,7 +55,7 @@ function PurchaseItem({ item }) {
 
   return (
     <Card>
-      <Card.Img variant="top" src={imageURL} />
+      <Card.Img variant="top" src={getImageURL(item.itemImage)} />
       <ListGroup className="list-group-flush">
         <ListGroupItem>
           <p>
