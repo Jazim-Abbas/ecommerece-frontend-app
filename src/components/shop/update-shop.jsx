@@ -19,7 +19,7 @@ export default function UpdateShop({ onShopReceived }) {
     });
   }, []);
 
-  if (shopDetail.isLoading) return <AppLoading />;
+  if (shopDetail.isLoading) return <></>;
 
   if (!shopDetail.data) return <></>;
 
@@ -86,7 +86,7 @@ export default function UpdateShop({ onShopReceived }) {
             onChange={handleChangeInput}
           />
         </div>
-        {updateShop.isLoading && <AppLoading />}
+        {/* {updateShop.isLoading && <AppLoading />} */}
         {!updateShop.isLoading && (
           <button className="btn btn-success mt-3" onClick={handleSubmit}>
             Save Changes

@@ -156,7 +156,7 @@ export default function ProfileScreen() {
             <FieldError field="country" />
           </div>
 
-          {api.isLoading && <AppLoading />}
+          {/* {api.isLoading && <AppLoading />} */}
           {!api.isLoading && (
             <button type="submit" className="btn btn-success mt-3 mb-5">
               Save Changes

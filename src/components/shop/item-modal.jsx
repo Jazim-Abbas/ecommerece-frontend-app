@@ -25,7 +25,7 @@ export default function ItemModal(props) {
     }
   }, [props.shop]);
 
-  if (allCategories.isLoading) return <AppLoading />;
+  if (allCategories.isLoading) return <></>;
 
   if (!allCategories.data) return <></>;
 

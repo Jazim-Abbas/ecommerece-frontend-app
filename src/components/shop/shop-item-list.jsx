@@ -29,7 +29,7 @@ export default function ShopItems({ shop, newItem, searchVal }) {
 
   if (!shop) return <></>;
 
-  if (shopItems.isLoading) return <AppLoading />;
+  if (shopItems.isLoading) return <></>;
 
   if (!shopItems.data) return <></>;
 
