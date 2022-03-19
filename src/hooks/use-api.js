@@ -11,7 +11,7 @@ export default function useApi(
 
   async function request(...params) {
     setIsLoading(true);
-    nprogress.start();
+    // nprogress.start();
     console.log("params: ", ...params);
 
     try {
@@ -25,7 +25,7 @@ export default function useApi(
       }
 
       setError({});
-      nprogress.done();
+      // nprogress.done();
       console.log(res);
       return res;
     } catch (err) {
@@ -47,7 +47,7 @@ export default function useApi(
         setError(err.response);
       }
 
-      nprogress.done();
+      // nprogress.done();
 
       if (hasCatchError) {
         throw err;

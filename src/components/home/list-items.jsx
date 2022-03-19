@@ -15,7 +15,7 @@ export default function ListItems() {
     item.request();
   }, []);
 
-  if (item.isLoading || favCtx.isLoading) return <AppLoading />;
+  if (item.isLoading || favCtx.isLoading) return <></>;
 
   if (!item.data) return <></>;
 
@@ -71,7 +71,7 @@ function Item({ item, favItems, onToggleFav, toggleLoading }) {
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
           <Card.Text>
-            {isLoading && <AppLoading />}
+            {/* {isLoading && <AppLoading />} */}
             {!isLoading && (
               <i
                 class={`${favIconClassname()} float-left pointer`}

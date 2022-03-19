@@ -77,7 +77,7 @@ function FavItem({ item, favItems, onToggleFav }) {
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
           <Card.Text>
-            {isLoading && <AppLoading />}
+            {/* {isLoading && <AppLoading />} */}
             {!isLoading && (
               <i
                 class={`${favIconClassname()} float-left pointer`}
