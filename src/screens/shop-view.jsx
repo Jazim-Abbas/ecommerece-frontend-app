@@ -22,7 +22,7 @@ export default function ShopViewScreen() {
     setSearchVal(e.target.value);
   };
 
-  if (singleShop.isLoading) return <AppLoading />;
+  if (singleShop.isLoading) return <></>;
 
   if (!singleShop.data) return <></>;
 

@@ -30,7 +30,7 @@ function PurchaseItems() {
     allPurchasesApi.request();
   }, []);
 
-  if (allPurchasesApi.isLoading) return <AppLoading />;
+  if (allPurchasesApi.isLoading) return <></>;
 
   if (!allPurchasesApi.data) return <></>;
 

@@ -25,14 +25,14 @@ export default function ItemScreen() {
     request(id);
   }, []);
 
-  if (isLoading) return <AppLoading />;
+  if (isLoading) return <></>;
 
   if (!item) return <></>;
 
   console.log("item: ", item);
 
   return (
-    <BaseLayout>
+    <BaseLayout hasSearch={false}>
       <div className="row">
         <div className="col-md-6">
           <ItemImagesCarousel featuredImage={item.featuredImage} />
@@ -106,7 +106,7 @@ function Fav({ item }) {
   return (
     <p>
       <span className="fw-bold">Add to Favourite</span>:{" "}
-      {isLoading && <AppLoading />}
+      {/* {isLoading && <AppLoading />} */}
       {!isLoading && (
         <i
           className={`${favIconClassname()} mx-2 pointer`}
