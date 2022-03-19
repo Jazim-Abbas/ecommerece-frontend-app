@@ -3,7 +3,7 @@ import * as shopApi from "../apis/shop";
 import * as itemCategoryApi from "../apis/item-category";
 import useApi from "../hooks/use-api";
 import { useEffect, useState } from "react";
-import { AppLoading, ServerError } from "../components";
+import { ServerError } from "../components";
 import { Link } from "react-router-dom";
 
 export default function ItemCategoryScreen() {
@@ -20,7 +20,7 @@ export default function ItemCategoryScreen() {
     setNewAddedCateg(category);
   };
 
-  if (shopDetailApi.isLoading) return <AppLoading />;
+  if (shopDetailApi.isLoading) return <></>;
 
   if (!shopDetailApi.data) {
     return (
@@ -106,7 +106,7 @@ function CategoryList({ shop, newCateg }) {
     }
   }, [newCateg]);
 
-  if (categoryiesApi.isLoading) return <AppLoading />;
+  if (categoryiesApi.isLoading) return <></>;
 
   return (
     <table className="table table-bordered table-hover">

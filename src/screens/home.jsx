@@ -6,7 +6,7 @@ import { useSearchContext } from "../contexts/search-context";
 import BaseLayout from "../layouts/base";
 import * as itemsApi from "../apis/item";
 import useApi from "../hooks/use-api";
-import { AppLoading } from "../components";
+// import { AppLoading } from "../components";
 import { getImageURL } from "../utils/app";
 
 export default function HomeScreen() {
@@ -21,7 +21,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <BaseLayout>
+    <BaseLayout hasFooter>
       <div className="row g-3">
         <ListItems />
       </div>
@@ -46,7 +46,7 @@ function SearchResults() {
 
   if (!searchCtx.data.searchVal) return <></>;
 
-  if (filterItems.isLoading) return <AppLoading />;
+  if (filterItems.isLoading) return <></>;
 
   if (!filterItems.data) return <></>;
 

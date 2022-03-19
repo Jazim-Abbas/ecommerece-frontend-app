@@ -4,7 +4,7 @@ import { useCartContext } from "../contexts/cart-context";
 import BaseLayout from "../layouts/base";
 import * as checkoutApi from "../apis/checkout";
 import useApi from "../hooks/use-api";
-import { AppLoading, ServerError } from "../components";
+import { ServerError } from "../components";
 
 export default function CartPage() {
   const cartCtx = useCartContext();
@@ -36,7 +36,7 @@ export default function CartPage() {
         </div>
         <CartItems cartCtx={cartCtx} />
         <div className="float-end">
-          {checkout.isLoading && <AppLoading />}
+          {/* {checkout.isLoading && <AppLoading />} */}
           {!checkout.isLoading && (
             <button
               className="btn btn-success mb-5"
