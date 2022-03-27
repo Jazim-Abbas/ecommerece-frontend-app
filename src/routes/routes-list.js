@@ -10,6 +10,7 @@ import RegisterScreen from "../screens/register";
 import ShopScreen from "../screens/shop";
 import ShopNameScreen from "../screens/shop-name";
 import ShopViewScreen from "../screens/shop-view";
+import EditItemScreen from "../screens/edit-item";
 
 const PUBLIC_ROUTES = [
   { path: "/login", Component: LoginScreen },
@@ -26,6 +27,7 @@ const PRIVATE_ROUTES = [
   { path: "/cart", Component: CartPage },
   { path: "/purchases", Component: PurchasesScreen },
   { path: "/item-category", Component: ItemCategoryScreen },
+  { path: "/item/edit/:id", Component: EditItemScreen },
   { path: "/item/:id", Component: ItemScreen },
 ];
 
