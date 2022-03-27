@@ -8,6 +8,10 @@ export function getItem(id) {
   return api.get("/item/" + id);
 }
 
+export function updateItem(id, price) {
+  return api.patch("/item/" + id, { price });
+}
+
 export function filterItems(filterOptions) {
   return api.post("/item/filter", filterOptions);
 }
