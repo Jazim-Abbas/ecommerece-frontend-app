@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import useApi from "../hooks/use-api";
 import BaseLayout from "../layouts/base";
 import * as itemApi from "../apis/item";
 
 export default function EditItemScreen() {
+  const { id } = useParams();
   const [price, setPrice] = useState();
   const singleItem = useApi(itemApi.getItem, { keyExtractor: "item" });
 
   useEffect(() => {
-    singleItem.request(1).then((res) => {
+    singleItem.request(+id).then((res) => {
       const item = res.data.item;
       console.log("item: ", item);
       console.log("item price: ", item.price);
