@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import * as shopApi from "../../apis/shop";
@@ -46,11 +46,22 @@ export default function ShopItems({ shop, newItem, searchVal }) {
 }
 
 function ShopItem({ item }) {
+  const history = useHistory();
+
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
+  const navigateToItemUpdatePage = (e) => {
+    e.stopPropagation();
+    history.push("/item/edit/" + item.id);
+  };
+
+  const navigateToSingleItemPage = () => {
+    history.push("/item/" + item.id);
+  };
+
   return (
-    <Link className="view-link" to={`/item/${item.id}`}>
+    <div className="pointer" onClick={navigateToSingleItemPage}>
       <Card>
         <Card.Img
           variant="top"
@@ -71,8 +82,13 @@ function ShopItem({ item }) {
               {item.quantity === 0 ? "Not Available" : "Available"}
             </i>
           </ListGroupItem>
+          <ListGroupItem>
+            <span onClick={navigateToItemUpdatePage}>
+              <i className="fa fa-edit" /> Edit Price
+            </span>
+          </ListGroupItem>
         </ListGroup>
       </Card>
-    </Link>
+    </div>
   );
 }
