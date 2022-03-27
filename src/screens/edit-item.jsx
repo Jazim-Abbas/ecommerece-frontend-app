@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import useApi from "../hooks/use-api";
 import BaseLayout from "../layouts/base";
 import * as itemApi from "../apis/item";
@@ -7,6 +7,8 @@ import ServerError from "../components/server-error";
 
 export default function EditItemScreen() {
   const { id } = useParams();
+  const history = useHistory();
+
   const [price, setPrice] = useState();
   const singleItem = useApi(itemApi.getItem, { keyExtractor: "item" });
   const updateItem = useApi(itemApi.updateItem, { hasCatchError: true });
@@ -19,6 +21,10 @@ export default function EditItemScreen() {
       setPrice(item.price);
     });
   }, []);
+
+  const handleBack = () => {
+    history.push("/init-shop");
+  };
 
   const handleSave = async () => {
     try {
@@ -41,9 +47,12 @@ export default function EditItemScreen() {
             onChange={(e) => setPrice(+e.target.value)}
           />
         </div>
+        <button className="btn btn-info mt-3" onClick={handleBack}>
+          Back
+        </button>
         {updateItem.isLoading && <p>Loading ...</p>}
         {!updateItem.isLoading && (
-          <button className="btn btn-primary mt-3" onClick={handleSave}>
+          <button className="btn btn-primary mt-3 mx-3" onClick={handleSave}>
             Save
           </button>
         )}
