@@ -52,11 +52,11 @@ function SearchResults() {
 
   const item = (filterItem) => {
     return (
-      <Link className="text-decoration-none" to={`/item/${filterItem.id}`}>
+      <Link className="text-decoration-none" to={`/item/${filterItem._id}`}>
         <Card>
           <Card.Img
             variant="top"
-            src={getImageURL(filterItem.featured_image)}
+            src={filterItem.featuredImage}
           />
           <ListGroup className="list-group-flush">
             <ListGroupItem>
