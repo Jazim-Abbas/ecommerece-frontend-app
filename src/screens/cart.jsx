@@ -15,7 +15,7 @@ export default function CartPage() {
     try {
       const checkoutItems = Object.values(cartCtx.cart).map((item) => {
         return {
-          itemId: item.id,
+          itemId: item._id,
           quantity: item.quantity,
         };
       });
@@ -83,9 +83,9 @@ function CartItems({ cartCtx }) {
       </thead>
       <tbody>
         {Object.values(cart).map((item) => (
-          <tr key={item.id}>
+          <tr key={item._id}>
             <td>
-              <Link to={`/item/${item.id}`}>{item.name}</Link>
+              <Link to={`/item/${item._id}`}>{item.name}</Link>
             </td>
             <td>{item.quantity}</td>
             <td>${item.price}</td>
@@ -93,7 +93,7 @@ function CartItems({ cartCtx }) {
               <i
                 class="fa fa-times pointer"
                 aria-hidden="true"
-                onClick={() => handleRemoveFromCart(item.id)}
+                onClick={() => handleRemoveFromCart(item._id)}
               />
             </td>
           </tr>

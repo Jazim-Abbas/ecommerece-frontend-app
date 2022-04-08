@@ -55,7 +55,7 @@ function CreateNewCategory({ shop, onNewCategAdded }) {
     try {
       const res = await newCategoryApi.request({
         name: categName,
-        shopId: shop.id,
+        shopId: shop._id,
       });
       const newCateg = res.data.category;
       onNewCategAdded(newCateg);
@@ -93,7 +93,7 @@ function CategoryList({ shop, newCateg }) {
   const categoryiesApi = useApi(itemCategoryApi.getAllCategories);
 
   useEffect(() => {
-    categoryiesApi.request(shop.id).then((res) => {
+    categoryiesApi.request(shop._id).then((res) => {
       const categories = res.data.categories;
       setCategories(categories);
     });

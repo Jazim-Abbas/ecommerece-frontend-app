@@ -55,7 +55,7 @@ function PurchaseItem({ item }) {
 
   return (
     <Card>
-      <Card.Img variant="top" src={getImageURL(item.itemImage)} />
+      <Card.Img variant="top" src={item.itemImage} />
       <ListGroup className="list-group-flush">
         <ListGroupItem>
           <p>
@@ -77,7 +77,7 @@ function PurchaseItem({ item }) {
           <p>
             <span className="fw-bold">Shop Name:</span>
             <span className="mx-2">
-              <Link to={`/shop/${item.Shop.id}`}>{item.Shop.name}</Link>
+              <Link to={`/shop/${item.Shop._id}`}>{item.Shop.name}</Link>
             </span>
           </p>
         </ListGroupItem>
