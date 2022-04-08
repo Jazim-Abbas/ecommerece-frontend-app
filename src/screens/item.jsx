@@ -45,8 +45,8 @@ export default function ItemScreen() {
             <ListGroup.Item>
               <p>
                 <span className="fw-bold">Shop Name:</span>
-                <Link to={`/shop/${item.Shop.id}`} className="mx-2">
-                  {item.Shop.name}
+                <Link to={`/shop/${item.shopId._id}`} className="mx-2">
+                  {item.shopId.name}
                 </Link>
               </p>
             </ListGroup.Item>
@@ -85,7 +85,7 @@ export default function ItemScreen() {
 function Fav({ item }) {
   const favCtx = useFavContext();
   const [isLoading, setIsLoading] = useState(false);
-  const isFav = favCtx.fav[item.id];
+  const isFav = favCtx.fav[item._id];
 
   const favIconClassname = () => {
     let icon = "fa fa-heart";
@@ -127,7 +127,7 @@ function ItemImagesCarousel({ featuredImage }) {
     <Carousel>
       <Carousel.Item>
         <img
-          src={getImageURL(featuredImage)}
+          src={featuredImage}
           alt="Single Item Image"
           className="d-block w-100"
         />
@@ -138,7 +138,7 @@ function ItemImagesCarousel({ featuredImage }) {
 
 function Cart({ item }) {
   const cartCtx = useCartContext();
-  const cartItem = cartCtx.cart[item.id];
+  const cartItem = cartCtx.cart[item._id];
   const [cartValue, setCartValue] = useState(1);
 
   const handleIncrement = () => {
