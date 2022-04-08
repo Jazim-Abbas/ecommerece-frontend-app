@@ -14,6 +14,7 @@ export default function UpdateShop({ onShopReceived }) {
   useEffect(() => {
     shopDetail.request().then((res) => {
       const shop = res.data.shop;
+      console.log("__shop: ", shop)
       setShopname(shop.name);
       onShopReceived(shop);
     });
@@ -44,7 +45,7 @@ export default function UpdateShop({ onShopReceived }) {
     await updateShop.request({
       name: shopname,
       image: shopImg,
-      id: shopDetail.data.id,
+      id: shopDetail.data._id,
     });
   };
 
@@ -68,7 +69,7 @@ export default function UpdateShop({ onShopReceived }) {
             {(shopImg || shopDetail.data.image) && (
               <img
                 src={
-                  shopImg ? localImageURL() : getImageURL(shopDetail.data.image)
+                  shopImg ? localImageURL() : shopDetail.data.image
                 }
                 alt="Shop Image"
                 width="200"
