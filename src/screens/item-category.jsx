@@ -55,7 +55,7 @@ function CreateNewCategory({ shop, onNewCategAdded }) {
     try {
       const res = await newCategoryApi.request({
         name: categName,
-        shopId: shop.id,
+        shopId: shop._id,
       });
       const newCateg = res.data.category;
       onNewCategAdded(newCateg);
@@ -93,7 +93,7 @@ function CategoryList({ shop, newCateg }) {
   const categoryiesApi = useApi(itemCategoryApi.getAllCategories);
 
   useEffect(() => {
-    categoryiesApi.request(shop.id).then((res) => {
+    categoryiesApi.request(shop._id).then((res) => {
       const categories = res.data.categories;
       setCategories(categories);
     });
@@ -118,8 +118,8 @@ function CategoryList({ shop, newCateg }) {
       </thead>
       <tbody>
         {categories.map((categ) => (
-          <tr key={categ.id}>
-            <td>{categ.id}</td>
+          <tr key={categ._id}>
+            <td>{categ._id}</td>
             <td>{categ.name}</td>
             {/* <td>
               <i className="fa fa-times pointer" aria-hidden="true" />
