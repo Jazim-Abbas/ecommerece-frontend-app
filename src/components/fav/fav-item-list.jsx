@@ -29,7 +29,7 @@ export default function FavItems({ searchVal }) {
   }
 
   return filteredItems().map((fav) => (
-    <div className="col-md-3" key={fav.id}>
+    <div className="col-md-3" key={fav._id}>
       <FavItem
         item={fav}
         favItems={favCtx.fav}
@@ -41,7 +41,7 @@ export default function FavItems({ searchVal }) {
 
 function FavItem({ item, favItems, onToggleFav }) {
   const [isLoading, setIsLoading] = useState(false);
-  const isFav = favItems[item.id];
+  const isFav = favItems[item._id];
   const history = useHistory();
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -71,7 +71,7 @@ function FavItem({ item, favItems, onToggleFav }) {
       <Card>
         <Card.Img
           variant="top"
-          src={item.featuredImage ? getImageURL(item.featuredImage) : imageURL}
+          src={item.featuredImage ? item.featuredImage : imageURL}
         />
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>
