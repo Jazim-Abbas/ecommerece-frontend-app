@@ -12,9 +12,12 @@ export default function ShopItems({ shop, newItem, searchVal }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
+    console.log("shop in shop-item-list: ", shop);
+
     if (shop) {
-      shopItems.request(shop.id).then((res) => {
+      shopItems.request(shop._id).then((res) => {
         const items = res.data.items;
+        console.log("__items: ", items);
         setItems(items);
       });
     }
@@ -53,11 +56,11 @@ function ShopItem({ item }) {
 
   const navigateToItemUpdatePage = (e) => {
     e.stopPropagation();
-    history.push("/item/edit/" + item.id);
+    history.push("/item/edit/" + item._id);
   };
 
   const navigateToSingleItemPage = () => {
-    history.push("/item/" + item.id);
+    history.push("/item/" + item._id);
   };
 
   return (
@@ -65,12 +68,12 @@ function ShopItem({ item }) {
       <Card>
         <Card.Img
           variant="top"
-          src={item.featuredImage ? getImageURL(item.featuredImage) : imageURL}
+          src={item.featuredImage ? item.featuredImage : imageURL}
         />
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
-          <Card.Text>Category: {item.ItemCategory.name}</Card.Text>
+          <Card.Text>Category: {item.categoryId.name}</Card.Text>
           <Card.Text>Total Sales: {item.salesCount}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
