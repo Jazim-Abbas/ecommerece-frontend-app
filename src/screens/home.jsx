@@ -52,11 +52,11 @@ function SearchResults() {
 
   const item = (filterItem) => {
     return (
-      <Link className="text-decoration-none" to={`/item/${filterItem.id}`}>
+      <Link className="text-decoration-none" to={`/item/${filterItem._id}`}>
         <Card>
           <Card.Img
             variant="top"
-            src={getImageURL(filterItem.featured_image)}
+            src={filterItem.featured_image}
           />
           <ListGroup className="list-group-flush">
             <ListGroupItem>
@@ -82,7 +82,7 @@ function SearchResults() {
       </h3>
       <div className="row">
         {filterItems.data.map((filterItem, i) => (
-          <div className="col-md-3" key={i}>
+          <div className="col-md-3" key={filterItem._id}>
             {item(filterItem)}
           </div>
         ))}

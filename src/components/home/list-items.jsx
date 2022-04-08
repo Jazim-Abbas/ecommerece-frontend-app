@@ -27,7 +27,7 @@ export default function ListItems() {
     return item.data.map((_item, i) => (
       <div className="col-md-3">
         <Item
-          key={i}
+          key={_item._id}
           item={_item}
           favItems={favCtx.fav}
           onToggleFav={favCtx.onToggleFav}
@@ -40,7 +40,7 @@ export default function ListItems() {
 
 function Item({ item, favItems, onToggleFav, toggleLoading }) {
   const [isLoading, setIsLoading] = useState(false);
-  const isFav = favItems[item.id];
+  const isFav = favItems[item._id];
   const imageURL =
     "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
@@ -61,11 +61,11 @@ function Item({ item, favItems, onToggleFav, toggleLoading }) {
   };
 
   return (
-    <Link className="view-link" to={`item/${item.id}`}>
+    <Link className="view-link" to={`item/${item._id}`}>
       <Card>
         <Card.Img
           variant="top"
-          src={item.featuredImage ? getImageURL(item.featuredImage) : imageURL}
+          src={item.featuredImage ? item.featuredImage : imageURL}
         />
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>
