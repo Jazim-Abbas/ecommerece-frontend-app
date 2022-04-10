@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { useFavContext } from "../../contexts/fav-context";
+import { onToggleFavorite } from "../../store/fav";
 import { getImageURL } from "../../utils/app";
 import AppLoading from "../loading";
 
 export default function FavItems({ searchVal }) {
   const [favItems, setFavItems] = useState([]);
+  const favState = useSelector((state) => state.favorite);
   const favCtx = useFavContext();
 
   useEffect(() => {
-    const items = Object.values(favCtx.fav);
+    const items = Object.values(favState.fav);
     setFavItems(items);
-  }, [favCtx.fav]);
+  }, [favState.fav]);
 
   const filteredItems = () => {
     if (searchVal === "") {
@@ -32,14 +36,15 @@ export default function FavItems({ searchVal }) {
     <div className="col-md-3" key={fav._id}>
       <FavItem
         item={fav}
-        favItems={favCtx.fav}
-        onToggleFav={favCtx.onToggleFav}
+        favItems={favState.fav}
+        onToggleFav={onToggleFavorite}
       />
     </div>
   ));
 }
 
 function FavItem({ item, favItems, onToggleFav }) {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const isFav = favItems[item._id];
   const history = useHistory();
@@ -61,9 +66,11 @@ function FavItem({ item, favItems, onToggleFav }) {
   const handleToggleFavItem = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    onToggleFav(item, isFav, () => {
-      setIsLoading(false);
-    });
+    dispatch(
+      onToggleFav(item, isFav, () => {
+        setIsLoading(false);
+      })
+    );
   };
 
   return (
