@@ -6,8 +6,11 @@ import useApi from "../../hooks/use-api";
 import AppLoading from "../loading";
 import { getImageURL } from "../../utils/app";
 import { useFavContext } from "../../contexts/fav-context";
+import { useDispatch, useSelector } from "react-redux";
+import { onToggleFavorite } from "../../store/fav";
 
 export default function ListItems() {
+  const favState = useSelector((state) => state.favorite);
   const favCtx = useFavContext();
   const item = useApi(itemApi.getAllItems, { keyExtractor: "items" });
 
@@ -15,7 +18,7 @@ export default function ListItems() {
     item.request();
   }, []);
 
-  if (item.isLoading || favCtx.isLoading) return <></>;
+  if (item.isLoading || favState.isLoading) return <></>;
 
   if (!item.data) return <></>;
 
@@ -29,9 +32,8 @@ export default function ListItems() {
         <Item
           key={i}
           item={_item}
-          favItems={favCtx.fav}
-          onToggleFav={favCtx.onToggleFav}
-          toggleLoading={favCtx.toggleLoading}
+          favItems={favState.fav}
+          onToggleFav={onToggleFavorite}
         />
       </div>
     ));
@@ -39,6 +41,7 @@ export default function ListItems() {
 }
 
 function Item({ item, favItems, onToggleFav, toggleLoading }) {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const isFav = favItems[item._id];
   const imageURL =
@@ -55,9 +58,11 @@ function Item({ item, favItems, onToggleFav, toggleLoading }) {
   const handleToggleFavItem = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    onToggleFav(item, isFav, () => {
-      setIsLoading(false);
-    });
+    dispatch(
+      onToggleFav(item, isFav, () => {
+        setIsLoading(false);
+      })
+    );
   };
 
   return (

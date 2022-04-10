@@ -22,9 +22,10 @@ export default function HomeScreen() {
 
   return (
     <BaseLayout hasFooter>
-      <div className="row g-3">
+      <div className="row g-3 mb-5">
         <ListItems />
       </div>
+      <div className="mb-5"></div>
     </BaseLayout>
   );
 }
@@ -54,10 +55,7 @@ function SearchResults() {
     return (
       <Link className="text-decoration-none" to={`/item/${filterItem._id}`}>
         <Card>
-          <Card.Img
-            variant="top"
-            src={filterItem.featuredImage}
-          />
+          <Card.Img variant="top" src={filterItem.featuredImage} />
           <ListGroup className="list-group-flush">
             <ListGroupItem>
               <p>
