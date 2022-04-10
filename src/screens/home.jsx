@@ -8,11 +8,12 @@ import * as itemsApi from "../apis/item";
 import useApi from "../hooks/use-api";
 // import { AppLoading } from "../components";
 import { getImageURL } from "../utils/app";
+import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
-  const searchCtx = useSearchContext();
+  const searchState = useSelector((state) => state.search);
 
-  if (searchCtx.data.searchVal) {
+  if (searchState.data.searchVal) {
     return (
       <BaseLayout>
         <SearchResults />
@@ -31,21 +32,19 @@ export default function HomeScreen() {
 }
 
 function SearchResults() {
-  const searchCtx = useSearchContext();
+  const searchState = useSelector((state) => state.search);
   const filterItems = useApi(itemsApi.filterItems, { keyExtractor: "items" });
-  const itemsCount = [1, 2, 3, 4];
-  const imageURL =
-    "https://media.istockphoto.com/photos/bakery-chef-prepare-pizza-picture-id1291299956?b=1&k=20&m=1291299956&s=170667a&w=0&h=Ys_FLtdY0Uzc7yTQl6JzvCHTQ3eRAuqNNU4x8EX1FB8=";
 
   useEffect(() => {
-    const searchVal = searchCtx.data.searchVal;
+    const searchVal = searchState.data.searchVal;
+    console.log("searchState: ", searchState);
     if (searchVal) {
       console.log("search value: ", searchVal);
-      filterItems.request(searchCtx.data);
+      filterItems.request(searchState.data);
     }
-  }, [searchCtx.data.searchVal]);
+  }, [searchState.data.searchVal]);
 
-  if (!searchCtx.data.searchVal) return <></>;
+  if (!searchState.data.searchVal) return <></>;
 
   if (filterItems.isLoading) return <></>;
 
@@ -76,7 +75,7 @@ function SearchResults() {
   return (
     <div>
       <h3 className="text-center">
-        Search Results: {searchCtx.data.searchVal}
+        Search Results: {searchState.data.searchVal}
       </h3>
       <div className="row">
         {filterItems.data.map((filterItem, i) => (

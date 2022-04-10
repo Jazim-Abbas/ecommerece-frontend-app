@@ -9,11 +9,23 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useSearchContext } from "../contexts/search-context";
+import {
+  handleIsOutOfStock,
+  handleMaxPrice,
+  handleMinPrice,
+  handleReset,
+  handleSearchVal,
+  handleSortKey,
+  handleSortOrder,
+} from "../store/search";
 
 export default function AppNavbar({ hasSearch = true }) {
-  const searchCtx = useSearchContext();
+  const dispatch = useDispatch();
+  const searchState = useSelector((state) => state.search);
   const [showFilter, setShowFilter] = useState(false);
 
   const handleLogout = () => {
@@ -68,8 +80,8 @@ export default function AppNavbar({ hasSearch = true }) {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
-                value={searchCtx.data.searchVal}
-                onChange={(e) => searchCtx.handleSearchVal(e.target.value)}
+                value={searchState.data.searchVal}
+                onChange={(e) => dispatch(handleSearchVal(e.target.value))}
               />
               <i
                 class="fa fa-filter pointer d-flex align-items-center mx-3"
@@ -79,11 +91,7 @@ export default function AppNavbar({ hasSearch = true }) {
             </Form>
           )}
 
-          <FilterModal
-            show={showFilter}
-            onHide={() => setShowFilter(false)}
-            searchCtx={searchCtx}
-          />
+          <FilterModal show={showFilter} onHide={() => setShowFilter(false)} />
         </Navbar.Collapse>
       </Container>
     </Navbar>
@@ -91,7 +99,8 @@ export default function AppNavbar({ hasSearch = true }) {
 }
 
 function FilterModal(props) {
-  const searchCtx = props.searchCtx;
+  const searchState = useSelector((state) => state.search);
+  const dispatch = useDispatch();
 
   return (
     <Modal {...props} size="lg" centered>
@@ -109,8 +118,8 @@ function FilterModal(props) {
                   name=""
                   id="sort_key"
                   className="form-control"
-                  value={searchCtx.data.sort.sortKey}
-                  onChange={(e) => searchCtx.handleSortKey(e.target.value)}
+                  value={searchState.data.sort.sortKey}
+                  onChange={(e) => dispatch(handleSortKey(e.target.value))}
                 >
                   <option>-------</option>
                   <option value="price">Price</option>
@@ -126,8 +135,8 @@ function FilterModal(props) {
                   name=""
                   id="sort_order"
                   className="form-control"
-                  value={searchCtx.data.sort.sortOrder}
-                  onChange={(e) => searchCtx.handleSortOrder(e.target.value)}
+                  value={searchState.data.sort.sortOrder}
+                  onChange={(e) => dispatch(handleSortOrder(e.target.value))}
                 >
                   <option>-------</option>
                   <option value="asc">ASC</option>
@@ -148,11 +157,11 @@ function FilterModal(props) {
                   type="number"
                   className="form-control"
                   value={
-                    searchCtx.data.priceRange.min === 0
+                    searchState.data.priceRange.min === 0
                       ? ""
-                      : searchCtx.data.priceRange.min
+                      : searchState.data.priceRange.min
                   }
-                  onChange={(e) => searchCtx.handleMinPrice(e.target.value)}
+                  onChange={(e) => dispatch(handleMinPrice(e.target.value))}
                 />
               </div>
             </div>
@@ -163,11 +172,11 @@ function FilterModal(props) {
                   type="number"
                   className="form-control"
                   value={
-                    searchCtx.data.priceRange.max === 0
+                    searchState.data.priceRange.max === 0
                       ? ""
-                      : searchCtx.data.priceRange.max
+                      : searchState.data.priceRange.max
                   }
-                  onChange={(e) => searchCtx.handleMaxPrice(e.target.value)}
+                  onChange={(e) => dispatch(handleMaxPrice(e.target.value))}
                 />
               </div>
             </div>
@@ -181,8 +190,8 @@ function FilterModal(props) {
               <input
                 type="checkbox"
                 className="form-check-input"
-                checked={searchCtx.data.isOutOfStock}
-                onChange={(e) => searchCtx.handleIsOutOfStock(e.target.checked)}
+                checked={searchState.data.isOutOfStock}
+                onChange={(e) => dispatch(handleIsOutOfStock(e.target.checked))}
               />
               {"  "}
               Exclude out of Stock Items
@@ -192,7 +201,7 @@ function FilterModal(props) {
         <hr />
         <button
           className="btn btn-danger"
-          onClick={() => searchCtx.handleReset()}
+          onClick={() => dispatch(handleReset())}
         >
           Reset
         </button>
