@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import favReducer from "./fav";
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    favorite: favReducer,
+  },
 });
 
 export { store };

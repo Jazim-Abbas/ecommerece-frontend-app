@@ -46,6 +46,7 @@ export const loadFavorites = () => async (dispatch, getState) => {
   dispatch(favRequested());
 
   const res = await favApi.getFavItems();
+  console.log("loadFavorites store: ", res);
   const favorites = res.data.favorites;
 
   dispatch(favReceived({ favorites }));
