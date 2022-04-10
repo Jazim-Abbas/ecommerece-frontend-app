@@ -16,14 +16,14 @@ export const profileSchema = yup.object().shape({
   city: yup.string().nullable().notRequired(),
   phone: yup.string().nullable().notRequired(),
   about: yup.string().nullable().notRequired(),
-  address: yup.string().nullable().required(),
+  address: yup.string().required(),
   country: yup.string().nullable().notRequired(),
   dateOfBirth: yup.string().nullable().notRequired(),
 });
 
 export const itemSchema = yup.object().shape({
   name: yup.string().required(),
-  categoryId: yup.number().required(),
+  categoryId: yup.string().required(),
   description: yup.string().required(),
   price: yup.number().required(),
   quantity: yup.number().required(),

@@ -21,7 +21,7 @@ export default function ItemModal(props) {
   useEffect(() => {
     if (props.shop) {
       console.log("shop: ", props.shop);
-      allCategories.request(props.shop.id);
+      allCategories.request(props.shop._id);
     }
   }, [props.shop]);
 
@@ -62,7 +62,7 @@ export default function ItemModal(props) {
       ...formValues,
       image: itemImgs,
       featured: featuredImg,
-      shopId: props.shop.id,
+      shopId: props.shop._id,
     };
 
     try {
@@ -153,7 +153,7 @@ export default function ItemModal(props) {
               >
                 <option>------</option>
                 {allCategories.data.map((categ) => (
-                  <option key={categ.id} value={categ.id}>
+                  <option key={categ._id} value={categ._id}>
                     {categ.name}
                   </option>
                 ))}
@@ -191,10 +191,11 @@ export default function ItemModal(props) {
             />
             <FieldError field="quantity" />
           </div>
+          {newItem.isLoading && <AppLoading />}
           <button
             type="submit"
             className="btn btn-success mt-3"
-            disabled={allCategories.data.length === 0}
+            disabled={allCategories.data.length === 0 || newItem.isLoading}
           >
             Save Changes
           </button>

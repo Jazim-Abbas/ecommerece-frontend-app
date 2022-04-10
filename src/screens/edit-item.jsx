@@ -14,7 +14,7 @@ export default function EditItemScreen() {
   const updateItem = useApi(itemApi.updateItem, { hasCatchError: true });
 
   useEffect(() => {
-    singleItem.request(+id).then((res) => {
+    singleItem.request(id).then((res) => {
       const item = res.data.item;
       console.log("item: ", item);
       console.log("item price: ", item.price);

@@ -65,7 +65,7 @@ export default function ProfileScreen() {
             </div>
             <div className="col-md-6">
               <img
-                src={isLocalImg ? localImageURL() : getImageURL(user.image)}
+                src={isLocalImg ? localImageURL() : user.image}
                 alt="Profile Image"
                 width="200"
               />
@@ -156,12 +156,14 @@ export default function ProfileScreen() {
             <FieldError field="country" />
           </div>
 
-          {/* {api.isLoading && <AppLoading />} */}
-          {!api.isLoading && (
-            <button type="submit" className="btn btn-success mt-3 mb-5">
-              Save Changes
-            </button>
-          )}
+          {api.isLoading && <AppLoading />}
+          <button
+            type="submit"
+            className="btn btn-success mt-3 mb-5"
+            disabled={api.isLoading}
+          >
+            Save Changes
+          </button>
         </AppForm>
       </div>
     </BaseLayout>
