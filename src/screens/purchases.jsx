@@ -1,10 +1,11 @@
 import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
+import { range } from "underscore";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import BaseLayout from "../layouts/base";
 import * as purchaseApi from "../apis/purchase";
 import useApi from "../hooks/use-api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppLoading } from "../components";
 import { getImageURL } from "../utils/app";
 
@@ -21,13 +22,19 @@ export default function PurchasesScreen() {
 }
 
 function PurchaseItems() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [purchases, setPurchases] = useState([]);
+
   const allPurchasesApi = useApi(purchaseApi.getAllPurchases, {
     keyExtractor: "purchases",
   });
   const items = [1, 2, 3, 4, 5];
 
   useEffect(() => {
-    allPurchasesApi.request();
+    allPurchasesApi.request().then((res) => {
+      setPurchases(res.data.purchases);
+    });
   }, []);
 
   if (allPurchasesApi.isLoading) return <></>;
@@ -40,12 +47,78 @@ function PurchaseItems() {
 
   return (
     <div className="row g-3">
-      {allPurchasesApi.data.map((purchaseItem, i) => (
+      <PaginationFilter
+        current={itemsPerPage}
+        onChangeFilter={(val) => setItemsPerPage(val)}
+      />
+      {purchases.map((purchaseItem, i) => (
         <div className="col-md-4">
           <PurchaseItem key={i} item={purchaseItem} />
         </div>
       ))}
+      <div className="d-flex justify-content-center">
+        <Pagination
+          items={purchases}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          handlePagination={() => {}}
+        />
+      </div>
     </div>
+  );
+}
+
+function PaginationFilter({ onChangeFilter, current }) {
+  const items = [2, 5, 10];
+
+  return (
+    <div className="form-group">
+      <label htmlFor="filter">Select Items per Page:</label>
+      <select
+        className="form-control"
+        id="filter"
+        onChange={(e) => onChangeFilter(+e.target.value)}
+      >
+        {items.map((item) => (
+          <option
+            key={item}
+            value={item}
+            selected={+item == +current ? "selected" : ""}
+          >
+            {item}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function Pagination({ items, currentPage, itemsPerPage, handlePagination }) {
+  const itemLength = Math.ceil(items.length / itemsPerPage);
+  const paginationList = range(1, itemLength + 1);
+  console.log(itemLength);
+
+  function getActiveClassName(item) {
+    let className = "page-item ";
+    className += item === currentPage ? "active" : "";
+    return className;
+  }
+
+  return (
+    itemLength > 1 && (
+      <ul className="pagination">
+        {paginationList.map((item) => (
+          <li
+            className={getActiveClassName(item)}
+            key={item}
+            style={{ cursor: "pointer" }}
+            onClick={() => handlePagination(item)}
+          >
+            <span className="page-link">{item}</span>
+          </li>
+        ))}
+      </ul>
+    )
   );
 }
 
