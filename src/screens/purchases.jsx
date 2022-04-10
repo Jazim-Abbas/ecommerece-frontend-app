@@ -45,13 +45,21 @@ function PurchaseItems() {
     return <div className="alert alert-info">No Purchases Yet</div>;
   }
 
+  const getPaginatedItems = () => {
+    const paginatedItems = purchases.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+    return paginatedItems;
+  };
+
   return (
     <div className="row g-3">
       <PaginationFilter
         current={itemsPerPage}
         onChangeFilter={(val) => setItemsPerPage(val)}
       />
-      {purchases.map((purchaseItem, i) => (
+      {getPaginatedItems().map((purchaseItem, i) => (
         <div className="col-md-4">
           <PurchaseItem key={i} item={purchaseItem} />
         </div>
