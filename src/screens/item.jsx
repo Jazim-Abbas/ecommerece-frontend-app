@@ -11,6 +11,7 @@ import { useCartContext } from "../contexts/cart-context";
 import { getImageURL } from "../utils/app";
 import { useDispatch, useSelector } from "react-redux";
 import { onToggleFavorite } from "../store/fav";
+import { onAddToCart } from "../store/cart";
 
 const imageURL =
   "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -143,8 +144,7 @@ function ItemImagesCarousel({ featuredImage }) {
 }
 
 function Cart({ item }) {
-  const cartCtx = useCartContext();
-  const cartItem = cartCtx.cart[item._id];
+  const dispatch = useDispatch();
   const [cartValue, setCartValue] = useState(1);
 
   const handleIncrement = () => {
@@ -156,7 +156,7 @@ function Cart({ item }) {
   };
 
   const handleAddToCart = () => {
-    cartCtx.onAddToCart(item, cartValue);
+    dispatch(onAddToCart(item, cartValue));
   };
 
   return (
