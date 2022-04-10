@@ -8,11 +8,14 @@ import { ServerError } from "../components";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { onRemoveFromCart, onResetCart } from "../store/cart";
+import { useState } from "react";
 
 export default function CartPage() {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state.cart);
   const history = useHistory();
+  const [isGift, setIsGift] = useState(true);
+  const [description, setDescription] = useState("");
   const checkout = useApi(checkoutApi.checkout, { hasCatchError: true });
 
   const navigateToPurchases = async () => {
@@ -39,7 +42,23 @@ export default function CartPage() {
           <ServerError error={checkout.error} />
         </div>
         <CartItems cart={cartState.cart} />
-        <div className="float-end">
+        <div className="form-check">
+          <label className="form-check-label">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              value=""
+              checked={isGift}
+              onChange={(e) => setIsGift(e.target.checked)}
+            />
+            Do you want to proceed as Gift?
+          </label>
+        </div>
+        <div className="form-group my-3">
+          <label htmlFor="comment">Description:</label>
+          <textarea className="form-control" rows={3} id="comment"></textarea>
+        </div>
+        <div>
           {/* {checkout.isLoading && <AppLoading />} */}
           {!checkout.isLoading && (
             <button
