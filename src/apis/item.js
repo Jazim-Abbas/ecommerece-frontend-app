@@ -12,6 +12,10 @@ export function updateItem(id, price) {
   return api.patch("/item/" + id, { price });
 }
 
+export function deleteItem(id) {
+  return api.delete("/item/" + id);
+}
+
 export function filterItems(filterOptions) {
   return api.post("/item/filter", filterOptions);
 }

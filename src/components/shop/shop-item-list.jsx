@@ -2,6 +2,7 @@ import { Link, useHistory } from "react-router-dom";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import * as shopApi from "../../apis/shop";
+import * as itemApi from "../../apis/item";
 import useApi from "../../hooks/use-api";
 import AppLoading from "../loading";
 import { getImageURL } from "../../utils/app";
@@ -59,6 +60,13 @@ function ShopItem({ item }) {
     history.push("/item/edit/" + item._id);
   };
 
+  const onItemdeletion = async (e) => {
+    e.stopPropagation();
+
+    await itemApi.deleteItem(item._id);
+    window.location.reload();
+  };
+
   const navigateToSingleItemPage = () => {
     history.push("/item/" + item._id);
   };
@@ -88,6 +96,11 @@ function ShopItem({ item }) {
           <ListGroupItem>
             <span onClick={navigateToItemUpdatePage}>
               <i className="fa fa-edit" /> Edit Price
+            </span>
+          </ListGroupItem>
+          <ListGroupItem>
+            <span onClick={onItemdeletion}>
+              <i className="fa fa-trash" /> Delete item
             </span>
           </ListGroupItem>
         </ListGroup>
