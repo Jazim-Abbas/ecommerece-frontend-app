@@ -9,6 +9,8 @@ import { AppLoading } from "../components";
 import { useFavContext } from "../contexts/fav-context";
 import { useCartContext } from "../contexts/cart-context";
 import { getImageURL } from "../utils/app";
+import { useDispatch, useSelector } from "react-redux";
+import { onToggleFavorite } from "../store/fav";
 
 const imageURL =
   "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
@@ -84,8 +86,10 @@ export default function ItemScreen() {
 
 function Fav({ item }) {
   const favCtx = useFavContext();
+  const dispatch = useDispatch();
+  const favState = useSelector((state) => state.favorite);
   const [isLoading, setIsLoading] = useState(false);
-  const isFav = favCtx.fav[item._id];
+  const isFav = favState.fav[item._id];
 
   const favIconClassname = () => {
     let icon = "fa fa-heart";
@@ -98,9 +102,11 @@ function Fav({ item }) {
   const handleToggleFavItem = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    favCtx.onToggleFav(item, isFav, () => {
-      setIsLoading(false);
-    });
+    dispatch(
+      onToggleFavorite(item, isFav, () => {
+        setIsLoading(false);
+      })
+    );
   };
 
   return (
