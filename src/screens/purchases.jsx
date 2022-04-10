@@ -69,7 +69,7 @@ function PurchaseItems() {
           items={purchases}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
-          handlePagination={() => {}}
+          handlePagination={(val) => setCurrentPage(+val)}
         />
       </div>
     </div>
