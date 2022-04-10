@@ -26,7 +26,7 @@ export default function CartPage() {
           quantity: item.quantity,
         };
       });
-      await checkout.request({ items: checkoutItems });
+      await checkout.request({ items: checkoutItems, isGift, description });
       console.log("checkout items: ", checkoutItems);
       dispatch(onResetCart());
       history.push("/purchases");
@@ -56,7 +56,13 @@ export default function CartPage() {
         </div>
         <div className="form-group my-3">
           <label htmlFor="comment">Description:</label>
-          <textarea className="form-control" rows={3} id="comment"></textarea>
+          <textarea
+            className="form-control"
+            rows={3}
+            id="comment"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          ></textarea>
         </div>
         <div>
           {/* {checkout.isLoading && <AppLoading />} */}
