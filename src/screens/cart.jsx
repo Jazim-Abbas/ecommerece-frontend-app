@@ -5,15 +5,19 @@ import BaseLayout from "../layouts/base";
 import * as checkoutApi from "../apis/checkout";
 import useApi from "../hooks/use-api";
 import { ServerError } from "../components";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { onRemoveFromCart, onResetCart } from "../store/cart";
 
 export default function CartPage() {
-  const cartCtx = useCartContext();
+  const dispatch = useDispatch();
+  const cartState = useSelector((state) => state.cart);
   const history = useHistory();
   const checkout = useApi(checkoutApi.checkout, { hasCatchError: true });
 
   const navigateToPurchases = async () => {
     try {
-      const checkoutItems = Object.values(cartCtx.cart).map((item) => {
+      const checkoutItems = Object.values(cartState.cart).map((item) => {
         return {
           itemId: item._id,
           quantity: item.quantity,
@@ -21,7 +25,7 @@ export default function CartPage() {
       });
       await checkout.request({ items: checkoutItems });
       console.log("checkout items: ", checkoutItems);
-      cartCtx.onResetCart();
+      dispatch(onResetCart());
       history.push("/purchases");
     } catch (_) {}
   };
@@ -34,14 +38,14 @@ export default function CartPage() {
         <div className="my-3">
           <ServerError error={checkout.error} />
         </div>
-        <CartItems cartCtx={cartCtx} />
+        <CartItems cart={cartState.cart} />
         <div className="float-end">
           {/* {checkout.isLoading && <AppLoading />} */}
           {!checkout.isLoading && (
             <button
               className="btn btn-success mb-5"
               onClick={navigateToPurchases}
-              disabled={Object.keys(cartCtx.cart).length === 0}
+              disabled={Object.keys(cartState.cart).length === 0}
             >
               Checkout
             </button>
@@ -52,8 +56,8 @@ export default function CartPage() {
   );
 }
 
-function CartItems({ cartCtx }) {
-  const cart = cartCtx.cart;
+function CartItems({ cart }) {
+  const dispatch = useDispatch();
 
   const calculateTotalPrice = () => {
     let total = 0;
@@ -65,7 +69,7 @@ function CartItems({ cartCtx }) {
   };
 
   const handleRemoveFromCart = (itemId) => {
-    cartCtx.onRemoveFromCart(itemId);
+    dispatch(onRemoveFromCart(itemId));
   };
 
   return (
