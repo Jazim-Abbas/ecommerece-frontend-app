@@ -24,7 +24,7 @@ export default function CartPage() {
       const checkoutItems = Object.values(cartState.cart).map((item) => {
         return {
           itemId: item._id,
-          quantity: item.quantity,
+          quantity: item.cartQuantity,
         };
       });
       await checkout.request({ items: checkoutItems, isGift, description });
