@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { ListGroup, Button } from "react-bootstrap";
 import { useCartContext } from "../contexts/cart-context";
 import BaseLayout from "../layouts/base";
 import * as checkoutApi from "../apis/checkout";
@@ -7,7 +8,7 @@ import useApi from "../hooks/use-api";
 import { ServerError } from "../components";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { onRemoveFromCart, onResetCart } from "../store/cart";
+import { onAddToCart, onRemoveFromCart, onResetCart } from "../store/cart";
 import { useState } from "react";
 
 export default function CartPage() {
@@ -87,7 +88,7 @@ function CartItems({ cart }) {
   const calculateTotalPrice = () => {
     let total = 0;
     Object.values(cart).forEach((item) => {
-      const price = item.price * item.quantity;
+      const price = item.price * item.cartQuantity;
       total += price;
     });
     return total;
@@ -98,7 +99,7 @@ function CartItems({ cart }) {
   };
 
   return (
-    <table className="table table-bordered table-hover">
+    <table className="table table-bordered">
       <caption className="text-center">
         Total Price: ${calculateTotalPrice()}
       </caption>
@@ -107,6 +108,7 @@ function CartItems({ cart }) {
           <th>Name</th>
           <th>Quantity</th>
           <th>Price</th>
+          <th>Cart</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -119,6 +121,9 @@ function CartItems({ cart }) {
             <td>{item.quantity}</td>
             <td>${item.price}</td>
             <td>
+              <Cart item={item} />
+            </td>
+            <td>
               <i
                 class="fa fa-times pointer"
                 aria-hidden="true"
@@ -129,5 +134,51 @@ function CartItems({ cart }) {
         ))}
       </tbody>
     </table>
+  );
+}
+
+function Cart({ item }) {
+  const cart = useSelector((state) => state.cart.cart);
+  console.log("cart___: ", cart);
+  console.log("item_quantity: ___", item);
+  const dispatch = useDispatch();
+  const [cartValue, setCartValue] = useState(cart[item._id]?.cartQuantity ?? 1);
+
+  const handleIncrement = () => {
+    dispatch(onAddToCart(item, 1));
+    setCartValue((prev) => prev + 1);
+  };
+
+  const handleDecrement = () => {
+    dispatch(onAddToCart(item, -1));
+    setCartValue((prev) => prev - 1);
+  };
+
+  const handleAddToCart = () => {
+    dispatch(onAddToCart(item, cartValue));
+  };
+
+  return (
+    <>
+      {item.quantity > 0 && (
+        <ListGroup.Item>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleDecrement}
+            disabled={cartValue === 1}
+          >
+            <i class="fa fa-minus" aria-hidden="true" />
+          </button>
+          <span className="mx-5">{cartValue}</span>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={handleIncrement}
+            disabled={cartValue >= item.quantity}
+          >
+            <i class="fa fa-plus" aria-hidden="true" />
+          </button>
+        </ListGroup.Item>
+      )}
+    </>
   );
 }

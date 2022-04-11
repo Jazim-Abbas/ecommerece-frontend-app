@@ -14,10 +14,10 @@ const cartSlice = createSlice({
       let newCart = { ...state.cart };
 
       if (newCart[item._id]) {
-        newCart[item._id].quantity = newCart[item._id].quantity + quantity;
+        newCart[item._id].cartQuantity = newCart[item._id].cartQuantity + quantity;
       } else {
         newCart[item._id] = item;
-        newCart[item._id].quantity = quantity;
+        newCart[item._id].cartQuantity = quantity;
       }
 
       state.cart = newCart;
