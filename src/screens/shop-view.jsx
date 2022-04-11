@@ -26,13 +26,15 @@ export default function ShopViewScreen() {
 
   if (!singleShop.data) return <></>;
 
-//   return <p>Shop View</p>;
+  console.log("single-shop-detail: ", singleShop.data);
+
+  //   return <p>Shop View</p>;
 
   return (
     <BaseLayout hasSearch={false}>
       <h3 className="text-center">Shop</h3>
       <hr />
-      <ShopDetail shop={singleShop.data} />
+      <ShopDetail shop={singleShop.data.shop} />
       <hr />
 
       <div className="mt-5">
@@ -48,7 +50,7 @@ export default function ShopViewScreen() {
           </div>
         </div>
         <div className="row g-3 mt-2">
-          <ShopViewItems items={singleShop.data.Items} searchVal={searchVal} />
+          <ShopViewItems items={singleShop.data.items} searchVal={searchVal} />
         </div>
       </div>
     </BaseLayout>

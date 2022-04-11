@@ -17,9 +17,9 @@ export default function ShopViewItems({ items, searchVal }) {
 
 function ShopItem({ item }) {
   return (
-    <Link className="view-link" to={`/item/${item.id}`}>
+    <Link className="view-link" to={`/item/${item._id}`}>
       <Card>
-        <Card.Img variant="top" src={getImageURL(item.featuredImage)} />
+        <Card.Img variant="top" src={item.featuredImage} />
         <Card.Body>
           <Card.Title>Item Name: {item.name}</Card.Title>
           <Card.Text>Price: ${item.price}</Card.Text>
