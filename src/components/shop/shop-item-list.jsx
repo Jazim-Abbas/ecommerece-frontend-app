@@ -95,7 +95,7 @@ function ShopItem({ item }) {
           </ListGroupItem>
           <ListGroupItem>
             <span onClick={navigateToItemUpdatePage}>
-              <i className="fa fa-edit" /> Edit Price
+              <i className="fa fa-edit" /> Edit Item
             </span>
           </ListGroupItem>
           <ListGroupItem>
