@@ -23,18 +23,28 @@ export default function CartPage() {
   const navigateToPurchases = async () => {
     console.log("gifts object: ", gifts);
 
-    // try {
-    //   const checkoutItems = Object.values(cartState.cart).map((item) => {
-    //     return {
-    //       itemId: item._id,
-    //       quantity: item.cartQuantity,
-    //     };
-    //   });
-    //   await checkout.request({ items: checkoutItems, isGift, description });
-    //   console.log("checkout items: ", checkoutItems);
-    //   dispatch(onResetCart());
-    //   history.push("/purchases");
-    // } catch (_) {}
+    const checkoutItems = Object.values(cartState.cart).map((item) => {
+      const cartItem = {};
+
+      if (gifts[item._id]) {
+        cartItem.isGift = gifts[item._id].isGift;
+        cartItem.description = gifts[item._id].description;
+      } else {
+        cartItem.isGift = false;
+        cartItem.description = "";
+      }
+
+      return { ...cartItem, itemId: item._id, quantity: item.cartQuantity };
+    });
+
+    console.log("checkout_items: ", checkoutItems);
+
+    try {
+      await checkout.request({ items: checkoutItems });
+      console.log("checkout items: ", checkoutItems);
+      dispatch(onResetCart());
+      history.push("/purchases");
+    } catch (_) {}
   };
 
   const handleIsGift = (id, val) => {

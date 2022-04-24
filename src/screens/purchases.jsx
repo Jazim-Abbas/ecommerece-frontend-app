@@ -184,12 +184,14 @@ function PurchaseItem({ item }) {
                 <span className="mx-2">Yes</span>
               </p>
             </ListGroupItem>
-            <ListGroupItem>
-              <p>
-                <span className="fw-bold">Description:</span>
-                <span className="mx-2">{item.description}</span>
-              </p>
-            </ListGroupItem>
+            {item.description && (
+              <ListGroupItem>
+                <p>
+                  <span className="fw-bold">Description:</span>
+                  <span className="mx-2">{item.description}</span>
+                </p>
+              </ListGroupItem>
+            )}
           </>
         )}
       </ListGroup>
