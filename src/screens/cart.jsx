@@ -18,20 +18,47 @@ export default function CartPage() {
   const [isGift, setIsGift] = useState(true);
   const [description, setDescription] = useState("");
   const checkout = useApi(checkoutApi.checkout, { hasCatchError: true });
+  const [gifts, setGifts] = useState({});
 
   const navigateToPurchases = async () => {
-    try {
-      const checkoutItems = Object.values(cartState.cart).map((item) => {
-        return {
-          itemId: item._id,
-          quantity: item.cartQuantity,
-        };
-      });
-      await checkout.request({ items: checkoutItems, isGift, description });
-      console.log("checkout items: ", checkoutItems);
-      dispatch(onResetCart());
-      history.push("/purchases");
-    } catch (_) {}
+    console.log("gifts object: ", gifts);
+
+    // try {
+    //   const checkoutItems = Object.values(cartState.cart).map((item) => {
+    //     return {
+    //       itemId: item._id,
+    //       quantity: item.cartQuantity,
+    //     };
+    //   });
+    //   await checkout.request({ items: checkoutItems, isGift, description });
+    //   console.log("checkout items: ", checkoutItems);
+    //   dispatch(onResetCart());
+    //   history.push("/purchases");
+    // } catch (_) {}
+  };
+
+  const handleIsGift = (id, val) => {
+    if (gifts[id]) {
+      const foundElem = { ...gifts[id] };
+      foundElem.isGift = val;
+      setGifts({ ...gifts, [id]: foundElem });
+      return;
+    }
+
+    const newGiftItem = { isGift: val, description: "" };
+    setGifts({ ...gifts, [id]: newGiftItem });
+  };
+
+  const handleDescription = (id, val) => {
+    if (gifts[id]) {
+      const foundElem = { ...gifts[id] };
+      foundElem.description = val;
+      setGifts({ ...gifts, [id]: foundElem });
+      return;
+    }
+
+    const newGiftItem = { isGift: false, description: val };
+    setGifts({ ...gifts, [id]: newGiftItem });
   };
 
   return (
@@ -42,29 +69,12 @@ export default function CartPage() {
         <div className="my-3">
           <ServerError error={checkout.error} />
         </div>
-        <CartItems cart={cartState.cart} />
-        <div className="form-check">
-          <label className="form-check-label">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              value=""
-              checked={isGift}
-              onChange={(e) => setIsGift(e.target.checked)}
-            />
-            Do you want to proceed as Gift?
-          </label>
-        </div>
-        <div className="form-group my-3">
-          <label htmlFor="comment">Description:</label>
-          <textarea
-            className="form-control"
-            rows={3}
-            id="comment"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </div>
+        <CartItems
+          cart={cartState.cart}
+          onIsGiftChange={handleIsGift}
+          onDescriptionChange={handleDescription}
+        />
+
         <div>
           {/* {checkout.isLoading && <AppLoading />} */}
           {!checkout.isLoading && (
@@ -82,7 +92,7 @@ export default function CartPage() {
   );
 }
 
-function CartItems({ cart }) {
+function CartItems({ cart, onIsGiftChange, onDescriptionChange }) {
   const dispatch = useDispatch();
 
   const calculateTotalPrice = () => {
@@ -108,6 +118,8 @@ function CartItems({ cart }) {
           <th>Name</th>
           <th>Quantity</th>
           <th>Price</th>
+          <th>Is Gift</th>
+          <th>Description</th>
           <th>Cart</th>
           <th>Action</th>
         </tr>
@@ -120,6 +132,26 @@ function CartItems({ cart }) {
             </td>
             <td>{item.quantity}</td>
             <td>${item.price}</td>
+            <td>
+              <div className="form-check">
+                <label className="form-check-label">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    onChange={(e) => onIsGiftChange(item._id, e.target.checked)}
+                  />
+                  Is Gift ?
+                </label>
+              </div>
+            </td>
+            <td>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Description"
+                onChange={(e) => onDescriptionChange(item._id, e.target.value)}
+              />
+            </td>
             <td>
               <Cart item={item} />
             </td>
@@ -139,8 +171,6 @@ function CartItems({ cart }) {
 
 function Cart({ item }) {
   const cart = useSelector((state) => state.cart.cart);
-  console.log("cart___: ", cart);
-  console.log("item_quantity: ___", item);
   const dispatch = useDispatch();
   const [cartValue, setCartValue] = useState(cart[item._id]?.cartQuantity ?? 1);
 
