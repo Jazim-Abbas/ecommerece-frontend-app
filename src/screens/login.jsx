@@ -6,8 +6,13 @@ import { loginSchema } from "../utils/validations";
 import * as authApi from "../apis/auth";
 import { ServerError } from "../components";
 import { BASE_URL } from "../utils/app";
+import { useMutation } from "urql";
+import { loginMutation } from "../graphql/item";
+import { useState } from "react";
 
 export default function LoginScreen() {
+  const [error, setError] = useState("");
+  const [loginRes, loginFunc] = useMutation(loginMutation);
   const auth = useApi(authApi.login, { hasCatchError: true });
   const history = useHistory();
 
@@ -17,16 +22,38 @@ export default function LoginScreen() {
 
   const handleSubmit = async ({ formValues }) => {
     try {
-      console.log("form values: ", formValues);
-      const res = await auth.request(formValues);
-      const { user } = res.data;
+      const res = await loginFunc({
+        email: formValues.email,
+        password: formValues.password,
+      });
+
+      if (res.error) {
+        throw res.error;
+      }
+
+      console.log("res: ", res);
+
+      const user = JSON.parse(res.data.login.data);
       const { token, ...userFields } = user;
       window.localStorage.setItem("token", token);
       window.localStorage.setItem("user", JSON.stringify(userFields));
       window.localStorage.setItem("userId", userFields.id);
       history.push("/");
       window.location.reload();
-    } catch (_) {}
+
+      // console.log("form values: ", formValues);
+      // const res = await auth.request(formValues);
+      // const { user } = res.data;
+      // const { token, ...userFields } = user;
+      // window.localStorage.setItem("token", token);
+      // window.localStorage.setItem("user", JSON.stringify(userFields));
+      // window.localStorage.setItem("userId", userFields.id);
+      // history.push("/");
+      // window.location.reload();
+    } catch (err) {
+      setError(err.message);
+      console.log("login error: ", err);
+    }
   };
 
   return (
@@ -37,7 +64,7 @@ export default function LoginScreen() {
       <hr />
       <div className="row justify-content-center align-items-center h-100">
         <div className="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
-          <ServerError error={auth.error} />
+          {error && <div className="alert alert-danger">{error}</div>}
           <AppForm
             initialValues={initialValues}
             validationSchema={loginSchema}

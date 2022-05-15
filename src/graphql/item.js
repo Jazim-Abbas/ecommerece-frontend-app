@@ -114,3 +114,12 @@ export const purchaseListQuery = `
         }
     }
 `;
+
+export const loginMutation = `
+    mutation($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+            message
+            data
+        }
+    }
+`;
