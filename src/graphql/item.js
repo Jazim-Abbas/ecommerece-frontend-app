@@ -15,3 +15,12 @@ export const singleItemQuery = `
         }
     }
 `;
+
+export const singleShopDetailQuery = `
+    query($shopId: String) {
+        getSingleShopDetail(shopId: $shopId) {
+            message
+            data
+        }
+    }
+`;

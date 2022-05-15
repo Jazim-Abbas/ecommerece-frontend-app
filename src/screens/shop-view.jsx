@@ -6,17 +6,26 @@ import * as shopApi from "../apis/shop";
 import useApi from "../hooks/use-api";
 import { AppLoading } from "../components";
 import ShopViewItems from "../components/shop-view/shop-view-items";
+import useGraphqlQuery from "../hooks/use-graphql-query";
+import { singleShopDetailQuery } from "../graphql/item";
 
 export default function ShopViewScreen() {
   const [searchVal, setSearchVal] = useState("");
   const { shopId } = useParams();
-  const singleShop = useApi(shopApi.getSingleShopDetail, {
-    keyExtractor: "shop",
+
+  const singleShop = useGraphqlQuery({
+    query: singleShopDetailQuery,
+    variables: { shopId },
+    keyExtractor: "getSingleShopDetail",
   });
 
-  useEffect(() => {
-    singleShop.request(shopId);
-  }, []);
+  // const singleShop = useApi(shopApi.getSingleShopDetail, {
+  //   keyExtractor: "shop",
+  // });
+
+  // useEffect(() => {
+  //   singleShop.request(shopId);
+  // }, []);
 
   const handleSearch = (e) => {
     setSearchVal(e.target.value);
