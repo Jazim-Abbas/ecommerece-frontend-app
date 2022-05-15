@@ -6,7 +6,10 @@ import { useEffect, useState } from "react";
 import { ServerError } from "../components";
 import { Link } from "react-router-dom";
 import { useMutation } from "urql";
-import { allItemCategoriesMutation } from "../graphql/item";
+import {
+  allItemCategoriesMutation,
+  createNewCategoryMutation,
+} from "../graphql/item";
 
 export default function ItemCategoryScreen() {
   const [newAddedCateg, setNewAddedCateg] = useState();
@@ -48,6 +51,7 @@ export default function ItemCategoryScreen() {
 }
 
 function CreateNewCategory({ shop, onNewCategAdded }) {
+  const [_, newCategoryFunc] = useMutation(createNewCategoryMutation);
   const newCategoryApi = useApi(itemCategoryApi.createNewCategory, {
     hasCatchError: true,
   });
@@ -55,13 +59,19 @@ function CreateNewCategory({ shop, onNewCategAdded }) {
 
   const handleAddCategory = async () => {
     try {
-      const res = await newCategoryApi.request({
-        name: categName,
-        shopId: shop._id,
-      });
-      const newCateg = res.data.category;
-      onNewCategAdded(newCateg);
+      const _res = await newCategoryFunc({ name: categName, shopId: shop._id });
+      const data = JSON.parse(_res.data.createCategory.data);
+      console.log("data after creating category ", data);
+      onNewCategAdded(data);
       setCateName("");
+
+      // const res = await newCategoryApi.request({
+      //   name: categName,
+      //   shopId: shop._id,
+      // });
+      // const newCateg = res.data.category;
+      // onNewCategAdded(newCateg);
+      // setCateName("");
     } catch (_) {}
   };
 

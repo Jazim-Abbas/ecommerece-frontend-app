@@ -42,3 +42,12 @@ export const allItemCategoriesMutation = `
         }
     }
 `;
+
+export const createNewCategoryMutation = `
+    mutation($name: String, $shopId: String) {
+        createCategory(name: $name, shopId: $shopId) {
+            message
+            data
+        }
+    }
+`;
