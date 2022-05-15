@@ -9,25 +9,40 @@ import useApi from "../../hooks/use-api";
 import ServerError from "../server-error";
 import AppLoading from "../loading";
 import { Link } from "react-router-dom";
+import { useMutation } from "urql";
+import { allItemCategoriesMutation } from "../../graphql/item";
 
 export default function ItemModal(props) {
   const newItem = useApi(itemApi.createNewItem, { hasCatchError: true });
   const [itemImgs, setItemImgs] = useState([]);
   const [featuredImg, setFeaturedImg] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [allCategoriesRes, allCategoriesFunc] = useMutation(
+    allItemCategoriesMutation
+  );
+
   const allCategories = useApi(itemCategoryApi.getAllCategories, {
     keyExtractor: "categories",
   });
 
   useEffect(() => {
+    // if (props.shop) {
+    //   console.log("shop: ", props.shop);
+    //   allCategories.request(props.shop._id);
+    // }
+
     if (props.shop) {
-      console.log("shop: ", props.shop);
-      allCategories.request(props.shop._id);
+      allCategoriesFunc({ shopId: props.shop._id }).then((res) => {
+        const data = JSON.parse(res.data.allCategories.data);
+        setCategories(data);
+      });
     }
   }, [props.shop]);
 
-  if (allCategories.isLoading) return <></>;
+  if (allCategoriesRes.fetching) return <></>;
 
-  if (!allCategories.data) return <></>;
+  if (!allCategoriesRes.data) return <></>;
 
   const localImageURL = () => {
     return URL.createObjectURL(featuredImg);
@@ -136,13 +151,13 @@ export default function ItemModal(props) {
             />
             <FieldError field="name" />
           </div>
-          {allCategories.data.length === 0 && (
+          {categories.length === 0 && (
             <div className="alert alert-info mt-3">
               <p>Please Create Item Category First</p>
               <Link to="/item-category">Create Item Category</Link>
             </div>
           )}
-          {allCategories.data.length > 0 && (
+          {categories.length > 0 && (
             <div class="form-group mt-3">
               <label for="category">Select Category</label>
               <Field
@@ -152,7 +167,7 @@ export default function ItemModal(props) {
                 name="categoryId"
               >
                 <option>------</option>
-                {allCategories.data.map((categ) => (
+                {categories.map((categ) => (
                   <option key={categ._id} value={categ._id}>
                     {categ.name}
                   </option>
@@ -195,7 +210,7 @@ export default function ItemModal(props) {
           <button
             type="submit"
             className="btn btn-success mt-3"
-            disabled={allCategories.data.length === 0 || newItem.isLoading}
+            disabled={categories.length === 0 || newItem.isLoading}
           >
             Save Changes
           </button>
