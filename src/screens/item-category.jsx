@@ -5,6 +5,8 @@ import useApi from "../hooks/use-api";
 import { useEffect, useState } from "react";
 import { ServerError } from "../components";
 import { Link } from "react-router-dom";
+import { useMutation } from "urql";
+import { allItemCategoriesMutation } from "../graphql/item";
 
 export default function ItemCategoryScreen() {
   const [newAddedCateg, setNewAddedCateg] = useState();
@@ -89,13 +91,22 @@ function CreateNewCategory({ shop, onNewCategAdded }) {
 }
 
 function CategoryList({ shop, newCateg }) {
+  const [_, allCategories] = useMutation(allItemCategoriesMutation);
+  const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const categoryiesApi = useApi(itemCategoryApi.getAllCategories);
 
   useEffect(() => {
-    categoryiesApi.request(shop._id).then((res) => {
-      const categories = res.data.categories;
-      setCategories(categories);
+    // categoryiesApi.request(shop._id).then((res) => {
+    //   const categories = res.data.categories;
+    //   setCategories(categories);
+    // });
+
+    setIsLoading(true);
+    allCategories({ shopId: shop._id }).then((res) => {
+      const data = JSON.parse(res.data.allCategories.data);
+      setCategories(data);
+      setIsLoading(false);
     });
   }, []);
 
@@ -106,7 +117,7 @@ function CategoryList({ shop, newCateg }) {
     }
   }, [newCateg]);
 
-  if (categoryiesApi.isLoading) return <></>;
+  if (isLoading) return <></>;
 
   return (
     <table className="table table-bordered table-hover">

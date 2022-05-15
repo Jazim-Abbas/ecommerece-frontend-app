@@ -33,3 +33,12 @@ export const updateProfileMutation = `
         }
     }
 `;
+
+export const allItemCategoriesMutation = `
+    mutation($shopId: String) {
+        allCategories(shopId: $shopId) {
+            message
+            data
+        }
+    }
+`;
