@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useMutation } from "urql";
 import * as shopApi from "../../apis/shop";
+import { shopDetailQuery } from "../../graphql/item";
 import useApi from "../../hooks/use-api";
 import { getImageURL } from "../../utils/app";
 import AppLoading from "../loading";
@@ -8,21 +10,31 @@ import ServerError from "../server-error";
 export default function UpdateShop({ onShopReceived }) {
   const [shopname, setShopname] = useState("");
   const [shopImg, setShopImg] = useState("");
+  const [serverShopImg, setServerShopImg] = useState("");
+  const [shopDetailRes, shopDetailFunc] = useMutation(shopDetailQuery);
+
   const shopDetail = useApi(shopApi.getShopDetail, { keyExtractor: "shop" });
   const updateShop = useApi(shopApi.updateShop, { hasCatchError: true });
 
   useEffect(() => {
-    shopDetail.request().then((res) => {
-      const shop = res.data.shop;
-      console.log("__shop: ", shop)
+    // shopDetail.request().then((res) => {
+    //   const shop = res.data.shop;
+    //   console.log("__shop: ", shop);
+    //   setShopname(shop.name);
+    //   onShopReceived(shop);
+    // });
+
+    shopDetailFunc().then((res) => {
+      const shop = JSON.parse(res.data.getShopDetails.data);
       setShopname(shop.name);
+      setServerShopImg(shop.image);
       onShopReceived(shop);
     });
   }, []);
 
-  if (shopDetail.isLoading) return <></>;
+  if (shopDetailRes.fetching) return <></>;
 
-  if (!shopDetail.data) return <></>;
+  if (!shopDetailRes.data) return <></>;
 
   const handleChangeInput = (e) => {
     const shopname = e.target.value;
@@ -66,11 +78,9 @@ export default function UpdateShop({ onShopReceived }) {
             </div>
           </div>
           <div className="col-md-6">
-            {(shopImg || shopDetail.data.image) && (
+            {(shopImg || serverShopImg) && (
               <img
-                src={
-                  shopImg ? localImageURL() : shopDetail.data.image
-                }
+                src={shopImg ? localImageURL() : serverShopImg}
                 alt="Shop Image"
                 width="200"
               />

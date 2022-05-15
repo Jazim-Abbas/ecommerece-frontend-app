@@ -51,3 +51,12 @@ export const createNewCategoryMutation = `
         }
     }
 `;
+
+export const shopDetailQuery = `
+    mutation {
+        getShopDetails {
+            message
+            data
+        }
+    }
+`;
