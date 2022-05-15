@@ -96,3 +96,12 @@ export const updateItemMutation = `
         }
     }
 `;
+
+export const createCheckoutMutation = `
+    mutation($items: [CreateCheckoutPayload]) {
+        createCheckout(items: $items) {
+            message
+            data
+        }
+    }
+`;

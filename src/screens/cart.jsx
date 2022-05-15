@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { onAddToCart, onRemoveFromCart, onResetCart } from "../store/cart";
 import { useState } from "react";
+import { useMutation } from "urql";
+import { createCheckoutMutation } from "../graphql/item";
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ export default function CartPage() {
   const [description, setDescription] = useState("");
   const checkout = useApi(checkoutApi.checkout, { hasCatchError: true });
   const [gifts, setGifts] = useState({});
+  const [checkoutRes, checkoutFunc] = useMutation(createCheckoutMutation);
 
   const navigateToPurchases = async () => {
     console.log("gifts object: ", gifts);
@@ -40,11 +43,17 @@ export default function CartPage() {
     console.log("checkout_items: ", checkoutItems);
 
     try {
-      await checkout.request({ items: checkoutItems });
-      console.log("checkout items: ", checkoutItems);
+      await checkoutFunc({ items: checkoutItems });
       dispatch(onResetCart());
       history.push("/purchases");
     } catch (_) {}
+
+    // try {
+    //   await checkout.request({ items: checkoutItems });
+    //   console.log("checkout items: ", checkoutItems);
+    //   dispatch(onResetCart());
+    //   history.push("/purchases");
+    // } catch (_) {}
   };
 
   const handleIsGift = (id, val) => {
