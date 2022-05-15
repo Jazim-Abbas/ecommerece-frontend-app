@@ -6,3 +6,12 @@ export const allItemsQuery = `
         }
     }
 `;
+
+export const singleItemQuery = `
+    query($id: String) {
+        singleItem(id: $id) {
+            message
+            data
+        }
+    }
+`;

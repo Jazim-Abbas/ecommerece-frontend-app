@@ -78,13 +78,13 @@ function Item({ item, favItems, onToggleFav, toggleLoading }) {
           <Card.Text>Price: ${item.price}</Card.Text>
           <Card.Text>
             {/* {isLoading && <AppLoading />} */}
-            {!isLoading && (
+            {/* {!isLoading && (
               <i
                 class={`${favIconClassname()} float-left pointer`}
                 aria-hidden="true"
                 onClick={handleToggleFavItem}
               />
-            )}
+            )} */}
           </Card.Text>
         </Card.Body>
       </Card>

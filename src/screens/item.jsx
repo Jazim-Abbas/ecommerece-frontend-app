@@ -12,27 +12,35 @@ import { getImageURL } from "../utils/app";
 import { useDispatch, useSelector } from "react-redux";
 import { onToggleFavorite } from "../store/fav";
 import { onAddToCart } from "../store/cart";
+import useGraphqlQuery from "../hooks/use-graphql-query";
+import { singleItemQuery } from "../graphql/item";
 
 const imageURL =
   "https://images.unsplash.com/photo-1645917864901-1fa7731b9af6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMnx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60";
 
 export default function ItemScreen() {
   const { id } = useParams();
-  const {
-    request,
-    isLoading,
-    data: item,
-  } = useApi(itemApi.getItem, { keyExtractor: "item" });
+  const { data: item, isLoading } = useGraphqlQuery({
+    query: singleItemQuery,
+    variables: { id },
+    keyExtractor: "singleItem",
+  });
 
-  useEffect(() => {
-    request(id);
-  }, []);
+  // const {
+  //   request,
+  //   isLoading,
+  //   data: item,
+  // } = useApi(itemApi.getItem, { keyExtractor: "item" });
+
+  // useEffect(() => {
+  //   request(id);
+  // }, []);
 
   if (isLoading) return <></>;
 
   if (!item) return <></>;
 
-  console.log("item: ", item);
+  console.log("__item: ", item);
 
   return (
     <BaseLayout hasSearch={false}>
@@ -74,9 +82,9 @@ export default function ItemScreen() {
                 {item.quantity}
               </p>
             </ListGroup.Item>
-            <ListGroup.Item>
+            {/* <ListGroup.Item>
               <Fav item={item} />
-            </ListGroup.Item>
+            </ListGroup.Item> */}
             <Cart item={item} />
           </ListGroup>
         </div>
