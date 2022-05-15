@@ -7,13 +7,18 @@ import * as itemCategoryApi from "../apis/item-category";
 import ServerError from "../components/server-error";
 import { AppLoading } from "../components";
 import { useMutation } from "urql";
-import { allItemCategoriesMutation, singleItemMutation } from "../graphql/item";
+import {
+  allItemCategoriesMutation,
+  singleItemMutation,
+  updateItemMutation,
+} from "../graphql/item";
 
 export default function EditItemScreen() {
   const { id } = useParams();
   const history = useHistory();
   const [categories, setCategories] = useState([]);
 
+  const [updateItemRes, updateItemFunc] = useMutation(updateItemMutation);
   const [singleItemRes, singleItemFunc] = useMutation(singleItemMutation);
   const [allCategoriesRes, allCategoriesFunc] = useMutation(
     allItemCategoriesMutation
@@ -66,7 +71,8 @@ export default function EditItemScreen() {
     console.log("price: ", price);
 
     try {
-      await updateItem.request(id, { price, categoryId: category, name });
+      // await updateItem.request(id, { price, categoryId: category, name });
+      await updateItemFunc({ id, item: { price, categoryId: category, name } });
     } catch (_) {}
   };
 
@@ -117,8 +123,8 @@ export default function EditItemScreen() {
         <button className="btn btn-info mt-3" onClick={handleBack}>
           Back
         </button>
-        {updateItem.isLoading && <p>Loading ...</p>}
-        {!updateItem.isLoading && (
+        {updateItemRes.fetching && <p>Loading ...</p>}
+        {!updateItemRes.fetching && (
           <button
             className="btn btn-primary mt-3 mx-3"
             onClick={handleSave}

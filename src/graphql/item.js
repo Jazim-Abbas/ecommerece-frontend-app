@@ -87,3 +87,12 @@ export const singleItemMutation = `
         }
     }
 `;
+
+export const updateItemMutation = `
+    mutation($id: String, $item: UpdateItemPayload) {
+        updateItem(id: $id, item: $item) {
+            message
+            data
+        }
+    }
+`;
