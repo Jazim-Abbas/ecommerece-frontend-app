@@ -6,10 +6,18 @@ import * as itemApi from "../apis/item";
 import * as itemCategoryApi from "../apis/item-category";
 import ServerError from "../components/server-error";
 import { AppLoading } from "../components";
+import { useMutation } from "urql";
+import { allItemCategoriesMutation, singleItemMutation } from "../graphql/item";
 
 export default function EditItemScreen() {
   const { id } = useParams();
   const history = useHistory();
+  const [categories, setCategories] = useState([]);
+
+  const [singleItemRes, singleItemFunc] = useMutation(singleItemMutation);
+  const [allCategoriesRes, allCategoriesFunc] = useMutation(
+    allItemCategoriesMutation
+  );
 
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState();
@@ -21,6 +29,14 @@ export default function EditItemScreen() {
   });
 
   useEffect(() => {
+    // singleItemFunc({ id }).then((res) => {
+    //   const item = JSON.parse(res.data.singleItem.data);
+    //   setPrice(item.price);
+    //   setName(item.name);
+    //   setCategory(item.categoryId);
+    // });
+    // allCategories.request(item.shopId._id);
+
     singleItem.request(id).then((res) => {
       const item = res.data.item;
       console.log("item: ", item);
@@ -29,7 +45,10 @@ export default function EditItemScreen() {
       setName(item.name);
       setCategory(item.categoryId);
 
-      allCategories.request(item.shopId._id);
+      allCategoriesFunc({ shopId: item.shopId._id }).then((_res) => {
+        const categories = JSON.parse(_res.data.allCategories.data);
+        setCategories(categories);
+      });
     });
   }, []);
 
@@ -51,21 +70,21 @@ export default function EditItemScreen() {
     } catch (_) {}
   };
 
-  if (singleItem.isLoading) return <></>;
+  if (singleItemRes.fetching) return <></>;
 
   return (
     <BaseLayout>
       <div>
         <ServerError error={updateItem.error} />
-        {allCategories.isLoading && <AppLoading />}
-        {allCategories.data && allCategories.data.length > 0 && (
+        {allCategoriesRes.fetching && <AppLoading />}
+        {allCategoriesRes.data && categories.length > 0 && (
           <div class="form-group mt-3">
             <label for="category">Select Category</label>
             <select
               className="form-control"
               onChange={(e) => setCategory(e.target.value)}
             >
-              {allCategories.data.map((categ) => (
+              {categories.map((categ) => (
                 <option
                   key={categ._id}
                   value={categ._id}

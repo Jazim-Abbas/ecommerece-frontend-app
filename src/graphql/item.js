@@ -78,3 +78,12 @@ export const newItemMutation = `
         }
     }
 `;
+
+export const singleItemMutation = `
+    mutation($id: String) {
+        singleItem(id: $id) {
+            message
+            data
+        }
+    }
+`;
