@@ -60,3 +60,12 @@ export const shopDetailQuery = `
         }
     }
 `;
+
+export const updateShopMutation = `
+    mutation($shopId: String, $name: String, $image: Upload) {
+        updateShop(shopId: $shopId, name: $name, image: $image) {
+            message
+            data
+        }
+    }
+`;

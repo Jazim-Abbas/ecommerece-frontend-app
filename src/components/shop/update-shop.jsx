@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "urql";
 import * as shopApi from "../../apis/shop";
-import { shopDetailQuery } from "../../graphql/item";
+import { shopDetailQuery, updateShopMutation } from "../../graphql/item";
 import useApi from "../../hooks/use-api";
 import { getImageURL } from "../../utils/app";
 import AppLoading from "../loading";
 import ServerError from "../server-error";
 
 export default function UpdateShop({ onShopReceived }) {
+  const [shop, setShop] = useState();
   const [shopname, setShopname] = useState("");
   const [shopImg, setShopImg] = useState("");
   const [serverShopImg, setServerShopImg] = useState("");
   const [shopDetailRes, shopDetailFunc] = useMutation(shopDetailQuery);
+  const [_, updateShopFunc] = useMutation(updateShopMutation);
 
-  const shopDetail = useApi(shopApi.getShopDetail, { keyExtractor: "shop" });
+  // const shopDetail = useApi(shopApi.getShopDetail, { keyExtractor: "shop" });
   const updateShop = useApi(shopApi.updateShop, { hasCatchError: true });
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export default function UpdateShop({ onShopReceived }) {
       const shop = JSON.parse(res.data.getShopDetails.data);
       setShopname(shop.name);
       setServerShopImg(shop.image);
+      setShop(shop);
       onShopReceived(shop);
     });
   }, []);
@@ -53,12 +56,28 @@ export default function UpdateShop({ onShopReceived }) {
     return "";
   };
 
-  const handleSubmit = async () => {
-    await updateShop.request({
-      name: shopname,
-      image: shopImg,
-      id: shopDetail.data._id,
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let func;
+
+    if (shopImg) {
+      func = updateShopFunc({
+        shopId: shop._id,
+        name: shopname,
+        image: shopImg,
+      });
+    } else {
+      func = updateShopFunc({ shopId: shop._id, name: shopname });
+    }
+
+    await func;
+
+    // await updateShop.request({
+    //   name: shopname,
+    //   image: shopImg,
+    //   id: shopDetail.data._id,
+    // });
   };
 
   return (
