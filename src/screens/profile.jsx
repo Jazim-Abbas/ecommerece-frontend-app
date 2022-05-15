@@ -7,9 +7,12 @@ import * as userApi from "../apis/user";
 import useApi from "../hooks/use-api";
 import { AppLoading, ServerError } from "../components";
 import { getImageURL } from "../utils/app";
+import { useMutation } from "urql";
+import { updateProfileMutation } from "../graphql/item";
 
 export default function ProfileScreen() {
   const api = useApi(userApi.updateProfile, { hasCatchError: true });
+  const [_, updateProfile] = useMutation(updateProfileMutation);
   const user = JSON.parse(window.localStorage.getItem("user"));
   const [profileImg, setProfileImg] = useState("");
   const [isLocalImg, setIsLocalImg] = useState(false);
@@ -28,14 +31,48 @@ export default function ProfileScreen() {
   };
 
   const handleSubmit = async ({ formValues }) => {
+    const fields = {
+      name: formValues.name ?? "",
+      city: formValues.city ?? "",
+      phone: formValues.phone ?? "",
+      about: formValues.about ?? "",
+      address: formValues.address ?? "",
+      country: formValues.country ?? "",
+      dateOfBirth: formValues.dateOfBirth ?? "",
+    };
+
     try {
-      console.log("profile subbmited values: ", formValues);
-      const res = await api.request({ ...formValues, profile: profileImg });
-      const image = res.data.user.image;
-      window.localStorage.setItem(
-        "user",
-        JSON.stringify({ ...formValues, image })
-      );
+      console.log("profile subbmited values: ", fields);
+      let func;
+      if (isLocalImg) {
+        func = updateProfile({ user: fields, image: profileImg });
+      } else {
+        func = updateProfile({ user: fields });
+      }
+
+      func
+        .then((res) => {
+          console.log(
+            "result after updating profile: ",
+            JSON.parse(res.data.updateProfile.data)
+          );
+          const data = JSON.parse(res.data.updateProfile.data);
+          const image = data.user.image;
+          window.localStorage.setItem(
+            "user",
+            JSON.stringify({ ...fields, image })
+          );
+        })
+        .catch((err) => {
+          console.log("error while updating profile: ", err);
+        });
+
+      // const res = await api.request({ ...formValues, profile: profileImg });
+      // const image = res.data.user.image;
+      // window.localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({ ...formValues, image })
+      // );
     } catch (_) {}
   };
 

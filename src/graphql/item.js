@@ -24,3 +24,12 @@ export const singleShopDetailQuery = `
         }
     }
 `;
+
+export const updateProfileMutation = `
+    mutation($user: UpdateUserPayload, $image: Upload) {
+        updateProfile(user: $user, image: $image) {
+            message
+            data
+        }
+    }
+`;

@@ -16,7 +16,7 @@ export const profileSchema = yup.object().shape({
   city: yup.string().nullable().notRequired(),
   phone: yup.string().nullable().notRequired(),
   about: yup.string().nullable().notRequired(),
-  address: yup.string().required(),
+  address: yup.string().nullable().notRequired(),
   country: yup.string().nullable().notRequired(),
   dateOfBirth: yup.string().nullable().notRequired(),
 });
