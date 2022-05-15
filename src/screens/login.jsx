@@ -23,6 +23,7 @@ export default function LoginScreen() {
       const { token, ...userFields } = user;
       window.localStorage.setItem("token", token);
       window.localStorage.setItem("user", JSON.stringify(userFields));
+      window.localStorage.setItem("userId", userFields.id);
       history.push("/");
       window.location.reload();
     } catch (_) {}

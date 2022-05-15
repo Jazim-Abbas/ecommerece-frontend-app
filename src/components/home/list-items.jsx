@@ -8,26 +8,27 @@ import { getImageURL } from "../../utils/app";
 import { useFavContext } from "../../contexts/fav-context";
 import { useDispatch, useSelector } from "react-redux";
 import { onToggleFavorite } from "../../store/fav";
+import useGraphqlQuery from "../../hooks/use-graphql-query";
+import { allItemsQuery } from "../../graphql/item";
 
 export default function ListItems() {
   const favState = useSelector((state) => state.favorite);
   const favCtx = useFavContext();
-  const item = useApi(itemApi.getAllItems, { keyExtractor: "items" });
+  const allItems = useGraphqlQuery({
+    query: allItemsQuery,
+    keyExtractor: "allItems",
+  });
 
-  useEffect(() => {
-    item.request();
-  }, []);
+  if (allItems.isLoading) return <></>;
 
-  if (item.isLoading || favState.isLoading) return <></>;
+  if (!allItems.data) return <></>;
 
-  if (!item.data) return <></>;
-
-  if (item.data.length === 0) {
+  if (allItems.data.length === 0) {
     return <p className="alert alert-info">No Items yet</p>;
   }
 
-  if (item.data) {
-    return item.data.map((_item, i) => (
+  if (allItems.data) {
+    return allItems.data.map((_item, i) => (
       <div className="col-md-3">
         <Item
           key={i}

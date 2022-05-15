@@ -8,12 +8,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { Provider as GraphqlProvider } from "urql";
+import { client } from "./graphql";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <App />
+        <GraphqlProvider value={client}>
+          <App />
+        </GraphqlProvider>
       </Router>
     </Provider>
   </React.StrictMode>,
