@@ -69,3 +69,12 @@ export const updateShopMutation = `
         }
     }
 `;
+
+export const newItemMutation = `
+    mutation($item: CreateItemPayload, $featured: Upload) {
+        createItem(item: $item, featured: $featured) {
+            message
+            data
+        }
+    }
+`;

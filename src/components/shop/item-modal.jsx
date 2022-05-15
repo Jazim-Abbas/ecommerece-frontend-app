@@ -10,7 +10,7 @@ import ServerError from "../server-error";
 import AppLoading from "../loading";
 import { Link } from "react-router-dom";
 import { useMutation } from "urql";
-import { allItemCategoriesMutation } from "../../graphql/item";
+import { allItemCategoriesMutation, newItemMutation } from "../../graphql/item";
 
 export default function ItemModal(props) {
   const newItem = useApi(itemApi.createNewItem, { hasCatchError: true });
@@ -21,6 +21,7 @@ export default function ItemModal(props) {
   const [allCategoriesRes, allCategoriesFunc] = useMutation(
     allItemCategoriesMutation
   );
+  const [_, newItemFunc] = useMutation(newItemMutation);
 
   const allCategories = useApi(itemCategoryApi.getAllCategories, {
     keyExtractor: "categories",
@@ -80,12 +81,28 @@ export default function ItemModal(props) {
       shopId: props.shop._id,
     };
 
+    const fields = {
+      name: formValues.name,
+      categoryId: formValues.categoryId,
+      description: formValues.description,
+      price: formValues.price,
+      quantity: formValues.quantity,
+      shopId: props.shop._id,
+    };
+
     try {
-      const res = await newItem.request(itemFields);
-      const newCreatedItem = res.data.item;
+      const res = await newItemFunc({ item: fields, featured: featuredImg });
+      const newCreatedItem = JSON.parse(res.data.createItem.data);
       props.onItemAdded(newCreatedItem);
       props.onHide();
     } catch (_) {}
+
+    // try {
+    //   const res = await newItem.request(itemFields);
+    //   const newCreatedItem = res.data.item;
+    //   props.onItemAdded(newCreatedItem);
+    //   props.onHide();
+    // } catch (_) {}
   };
 
   return (
