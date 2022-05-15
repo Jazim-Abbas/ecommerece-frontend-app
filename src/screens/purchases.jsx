@@ -8,6 +8,8 @@ import useApi from "../hooks/use-api";
 import { useEffect, useState } from "react";
 import { AppLoading } from "../components";
 import { getImageURL } from "../utils/app";
+import { useMutation } from "urql";
+import { purchaseListQuery } from "../graphql/item";
 
 export default function PurchasesScreen() {
   return (
@@ -26,22 +28,29 @@ function PurchaseItems() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [purchases, setPurchases] = useState([]);
 
-  const allPurchasesApi = useApi(purchaseApi.getAllPurchases, {
-    keyExtractor: "purchases",
-  });
-  const items = [1, 2, 3, 4, 5];
+  const [purchaseListRes, purchaseListFunc] = useMutation(purchaseListQuery);
+
+  // const allPurchasesApi = useApi(purchaseApi.getAllPurchases, {
+  //   keyExtractor: "purchases",
+  // });
+  // const items = [1, 2, 3, 4, 5];
 
   useEffect(() => {
-    allPurchasesApi.request().then((res) => {
-      setPurchases(res.data.purchases);
+    // allPurchasesApi.request().then((res) => {
+    //   setPurchases(res.data.purchases);
+    // });
+
+    purchaseListFunc().then((res) => {
+      const purchases = JSON.parse(res.data.allPurchases.data);
+      setPurchases(purchases);
     });
   }, []);
 
-  if (allPurchasesApi.isLoading) return <></>;
+  if (purchaseListRes.fetching) return <></>;
 
-  if (!allPurchasesApi.data) return <></>;
+  if (!purchaseListRes.data) return <></>;
 
-  if (allPurchasesApi.data.length === 0) {
+  if (purchases.length === 0) {
     return <div className="alert alert-info">No Purchases Yet</div>;
   }
 

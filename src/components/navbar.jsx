@@ -46,9 +46,9 @@ export default function AppNavbar({ hasSearch = true }) {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link as={Link} to="/favs">
+            {/* <Nav.Link as={Link} to="/favs">
               <i class="fa fa-heart-o" aria-hidden="true" />
-            </Nav.Link>
+            </Nav.Link> */}
             <Nav.Link as={Link} to="/cart">
               <i class="fa fa-shopping-cart" aria-hidden="true" />
             </Nav.Link>

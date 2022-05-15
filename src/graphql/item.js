@@ -105,3 +105,12 @@ export const createCheckoutMutation = `
         }
     }
 `;
+
+export const purchaseListQuery = `
+    mutation {
+        allPurchases {
+            message
+            data
+        }
+    }
+`;

@@ -13,16 +13,16 @@ import { useSelector } from "react-redux";
 export default function HomeScreen() {
   const searchState = useSelector((state) => state.search);
 
-  if (searchState.data.searchVal) {
-    return (
-      <BaseLayout>
-        <SearchResults />
-      </BaseLayout>
-    );
-  }
+  // if (searchState.data.searchVal) {
+  //   return (
+  //     <BaseLayout>
+  //       <SearchResults />
+  //     </BaseLayout>
+  //   );
+  // }
 
   return (
-    <BaseLayout hasFooter>
+    <BaseLayout hasFooter hasSearch={false}>
       <div className="row g-3 mb-5">
         <ListItems />
       </div>
